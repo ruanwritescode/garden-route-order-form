@@ -60,6 +60,22 @@ async function init() {
   // Keep the popover aligned (or hidden) as the page scrolls
   window.addEventListener('scroll', updateQtyPopover, true);
 
+  // Mobile "back to tabs" button: show once the tabs have scrolled out of view
+  const backBtn = document.getElementById('back-to-tabs');
+  const tabsEl = document.getElementById('order-form');
+  const updateBackToTabs = () => {
+    if (!backBtn || !tabsEl) return;
+    backBtn.classList.toggle('show', tabsEl.getBoundingClientRect().bottom < 0);
+  };
+  if (backBtn && tabsEl) {
+    backBtn.addEventListener('click', () => {
+      const y = tabsEl.getBoundingClientRect().top + window.scrollY - 12;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+    window.addEventListener('scroll', updateBackToTabs, { passive: true });
+    updateBackToTabs();
+  }
+
   recalc();
   syncBottomPadding();
   window.addEventListener('resize', () => { syncBottomPadding(); updateQtyPopover(); });
