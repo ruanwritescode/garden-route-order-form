@@ -188,6 +188,27 @@
     color: var(--sage-dark);
     border-bottom-color: var(--terracotta);
   }
+  /* On narrow screens the row can't fit all tabs — stack them full-width
+     and let the page scroll vertically instead of overflowing sideways. */
+  @media (max-width: 720px) {
+    .tabs {
+      flex-direction: column;
+      border-bottom: none;
+    }
+    .tab {
+      flex: none;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 0;
+      border-bottom: 1px solid var(--border-soft);
+      border-left: 3px solid transparent;
+    }
+    .tab.active {
+      background: var(--cream-light);
+      border-left-color: var(--terracotta);
+      border-bottom-color: var(--border-soft);
+    }
+  }
 
   .section { display: none; }
   .section.active { display: block; animation: fadeIn 0.3s; }
@@ -271,6 +292,14 @@
     align-items: baseline;
     gap: 6px;
     min-width: 0;
+  }
+  /* Stack name over code on small screens so the code can't overlap the price */
+  @media (max-width: 720px) {
+    .prow-label {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1px;
+    }
   }
   .product-row .name { color: var(--ink); }
   .product-row .code {
