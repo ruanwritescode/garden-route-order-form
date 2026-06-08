@@ -208,6 +208,7 @@
       border-left-color: var(--terracotta);
       border-bottom-color: var(--border-soft);
     }
+    .
   }
 
   .section { display: none; }
@@ -516,6 +517,47 @@
   }
   .sum-block .value.total { color: var(--sage-dark); }
 
+  @media (max-width: 720px) {
+    .summary-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--paper);
+    border-top: 2px solid var(--sage-dark);
+    box-shadow: 0 -2px 20px rgba(44, 38, 24, 0.08);
+    padding: 1rem .75rem;
+    z-index: 100;
+  }
+    .summary-inner {
+    /* margin: 0 auto; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    align-items: start;
+  }
+    .sum-block .label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .sum-block .value {
+    font-family: 'Inter', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .sum-block .rate {
+    font-size: 14px;
+    color: var(--terracotta);
+    margin-top: 2px;
+  }
+  .sum-block .value.total { color: var(--sage-dark); }
+  }
+
   .place-btn {
     background: var(--sage-dark);
     color: var(--paper);
@@ -745,10 +787,15 @@
 
   @media (max-width: 720px) {
     .summary-inner {
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
     }
     .place-btn { grid-column: 1 / -1; }
+    .shipping-tip-top {
+      font-size: 20px;
+      padding-top: 0px;
+      padding-bottom: 8px;
+    }
   }
 
   /* ---- Toast ---- */
@@ -772,7 +819,7 @@
   .back-to-tabs {
     position: fixed;
     top: 12px;
-    left: 50%;
+    left: 10%;
     z-index: 1100;
     width: 46px;
     height: 46px;
