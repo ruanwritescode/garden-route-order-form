@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garden Route — Wholesale Order Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --cream: #f4ecdb;
+    --cream-light: #faf5e9;
+    --cream-dark: #ebe0c8;
+    --sage: #5b6e4a;
+    --sage-dark: #3d4d31;
+    --sage-light: #8a9b78;
+    --terracotta: #b1573a;
+    --terracotta-dark: #884028;
+    --ink: #2c2618;
+    --ink-light: #6b6451;
+    --paper: #fffdf7;
+    --border: #d4c8a8;
+    --border-soft: #e6dcc0;
+    --warning-bg: #f7e8d8;
+    --warning-text: #884028;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 15px;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(91, 110, 74, 0.04) 0%, transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(177, 87, 58, 0.04) 0%, transparent 45%);
+    background-attachment: fixed;
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 12rem;
+  }
+
+  /* ---- Header ---- */
+  .header {
+    text-align: center;
+    padding: 2rem 0 2.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .brand-logo {
+    display: block;
+    margin: 0 auto;
+    width: auto;
+    height: 150px;
+    max-width: 90%;
+  }
+  @media (max-width: 720px) {
+    .brand-logo { height: 110px; }
+  }
+  .header .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--sage-dark);
+    line-height: 1;
+  }
+  .header .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-light);
+    margin-top: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+  .header .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--terracotta);
+    margin: 1rem auto 0.75rem;
+  }
+  .header .subtitle {
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-size: 11px;
+    color: var(--sage);
+    font-weight: 500;
+  }
+
+  /* ---- Section labels ---- */
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--sage-dark);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-soft);
+    font-weight: 500;
+  }
+  .section-label em { color: var(--terracotta); font-style: italic; }
+
+  /* ---- Customer card ---- */
+  .customer-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .customer-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px; right: -1px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--sage) 0%, var(--terracotta) 100%);
+    border-radius: 4px 4px 0 0;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.25rem;
+  }
+  .form-grid .full { grid-column: 1 / -1; }
+  .form-grid label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .form-grid input {
+    width: 100%;
+    padding: 8px 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+  .form-grid input:focus {
+    outline: none;
+    border-bottom-color: var(--sage);
+  }
+  .meta-row {
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px dashed var(--border-soft);
+  }
+  @media (max-width: 720px) {
+    .form-grid, .meta-row { grid-template-columns: 1fr; }
+  }
+
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    padding: 12px 12px;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    color: var(--ink-light);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .tab:hover { color: var(--sage-dark); }
+  .tab.active {
+    color: var(--sage-dark);
+    border-bottom-color: var(--terracotta);
+  }
+
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.3s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ---- Scent blend groups (Fall/Winter, Spring/Summer) ---- */
+  .scent-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 720px) {
+    .scent-grid { grid-template-columns: 1fr; }
+  }
+
+  .scent-card {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .scent-card:focus-within, .scent-card.has-items {
+    border-color: var(--sage-light);
+    box-shadow: 0 1px 8px rgba(91, 110, 74, 0.08);
+  }
+  .scent-body {
+    display: flex;
+    align-items: center;
+  }
+  .scent-side {
+    display: block;
+    width: 40%;
+    max-width: 238px;
+    aspect-ratio: 320 / 240;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 4px;
+    /* border: 1px solid var(--border-soft); */
+  }
+  .scent-rows {
+    flex: 1;
+    min-width: 0;
+    border-left: 1px solid var(--border-soft);
+  }
+  .scent-head {
+    background: var(--cream-light);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .scent-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    color: var(--sage-dark);
+    font-weight: 500;
+  }
+  .scent-sub {
+    font-size: 14px;
+    color: var(--sage);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .scent-sub.zero { color: var(--ink-light); opacity: 0.5; }
+
+  .product-row {
+    display: grid;
+    grid-template-columns: 1fr auto 64px;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 13px;
+  }
+  .product-row:last-child { border-bottom: none; }
+  .prow-label {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    min-width: 0;
+  }
+  .product-row .name { color: var(--ink); }
+  .product-row .code {
+    font-size: 10px;
+    color: var(--ink-light);
+    font-family: 'Inter', monospace;
+    letter-spacing: 0.05em;
+  }
+  .product-row .price {
+    color: var(--ink-light);
+    font-size: 12px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  /* .product-row .line-total {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    font-size: 12px;
+  } */
+  /* .product-row .line-total.zero { color: transparent; } */
+
+  /* ---- Inputs ---- */
+  input[type="number"].qty {
+    width: 100%;
+    padding: 5px 7px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    font-family: inherit;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  input[type="number"].qty::-webkit-outer-spin-button,
+  input[type="number"].qty::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type="number"].qty:focus {
+    outline: none;
+    border-color: var(--sage);
+    background: white;
+  }
+  input[type="number"].qty.has-value {
+    border-color: var(--sage-light);
+    background: var(--cream-light);
+    font-weight: 500;
+    color: var(--sage-dark);
+  }
+
+  /* ---- Vase fillers & Rose hips cards ---- */
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .item-card {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 14px;
+    transition: border-color 0.2s;
+  }
+  .item-card.has-items {
+    border-color: var(--sage-light);
+    background: var(--cream-light);
+  }
+  .item-card .item-img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    display: block;
+  }
+  #sect-vf .item-card .item-img { aspect-ratio: 320 / 320; }
+  #sect-rh .item-card .item-img { aspect-ratio: 450 / 640; }
+  .item-card .item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--sage-dark);
+    margin-bottom: 2px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .item-card .item-meta {
+    font-size: 11px;
+    color: var(--ink-light);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .item-card .item-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .item-card .item-price {
+    font-size: 12px;
+    color: var(--terracotta);
+    font-weight: 500;
+  }
+
+  /* ---- Refresher oils ---- */
+  .rf-warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+    border-left: 3px solid var(--terracotta);
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 1rem;
+    border-radius: 0 3px 3px 0;
+  }
+  /* Storage / incognito warning */
+  .storage-warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+    border-left: 3px solid var(--terracotta);
+    padding: 10px 14px;
+    font-size: 13px;
+    margin: 4px 0 1rem;
+    border-radius: 0 3px 3px 0;
+  }
+  /* Save / restore bar */
+  .save-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 4px 0 1rem;
+    font-size: 13px;
+    color: var(--ink-light);
+  }
+  .save-bar .link-btn {
+    background: none;
+    border: none;
+    color: var(--terracotta);
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    white-space: nowrap;
+  }
+  .save-bar .link-btn:hover { color: var(--terracotta-dark); }
+  /* Informational quantity note (not an error) */
+  .qty-note {
+    font-size: 13px;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .rf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+  }
+  .rf-row {
+    display: grid;
+    grid-template-columns: 1fr 50px 60px;
+    align-items: center;
+    gap: 8px;
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .rf-row.has-items {
+    border-color: var(--sage-light);
+    background: var(--cream-light);
+  }
+  .rf-name { color: var(--ink); }
+  .rf-code { font-size: 10px; color: var(--ink-light); letter-spacing: 0.05em; }
+  .rf-price { font-size: 12px; color: var(--ink-light); text-align: right; }
+
+  /* ---- Summary bar ---- */
+  .summary-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--paper);
+    border-top: 2px solid var(--sage-dark);
+    box-shadow: 0 -2px 20px rgba(44, 38, 24, 0.08);
+    padding: 1rem 1.5rem;
+    z-index: 100;
+  }
+  .summary-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 1.5rem;
+    align-items: top;
+  }
+  .sum-block {
+    text-align: center;
+  }
+  .sum-block .label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .sum-block .value {
+    font-family: 'Inter', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .sum-block .rate {
+    font-size: 14px;
+    color: var(--terracotta);
+    margin-top: 2px;
+  }
+  .sum-block .value.total { color: var(--sage-dark); }
+
+  .place-btn {
+    background: var(--sage-dark);
+    color: var(--paper);
+    border: none;
+    padding: 12px 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .place-btn:hover {
+    background: var(--terracotta);
+  }
+  .place-btn:disabled {
+    background: var(--ink-light);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* ---- Per-tab summary card (shown at top of each tab) ---- */
+  .tab-summary {
+    border: 6px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .tab-summary-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2px;
+    background: var(--border-soft);
+  }
+  .ts-cell {
+    background: var(--paper);
+    text-align: center;
+    padding: 12px 14px;
+    white-space: nowrap;
+  }
+  .ts-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .ts-value {
+    font-family: 'Inter', serif;
+    font-size: 22px;
+    color: var(--sage-dark);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .ts-cell.total .ts-value { color: var(--ink); }
+
+  /* ---- Vase filler / Rose hip subtotal inside card ---- */
+  .item-card .item-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    color: var(--terracotta);
+    text-align: right;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-soft);
+    font-variant-numeric: tabular-nums;
+    display: none;
+  }
+  .item-card.has-items .item-sub { display: block; }
+
+  /* ---- Invalid input styling + validation warning ---- */
+  input.qty.invalid {
+    border-color: var(--terracotta) !important;
+    background: #fbeae0 !important;
+    color: var(--terracotta-dark) !important;
+  }
+  .validation-warning {
+    background: var(--warning-bg);
+    border-left: 3px solid var(--terracotta);
+    color: var(--warning-text);
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 0 3px 3px 0;
+    max-width: 1080px;
+    margin: 0 auto 10px;
+  }
+  .validation-warning strong { display: block; margin-bottom: 2px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .validation-warning ul { margin: 0; padding-left: 18px; }
+  .validation-warning li { margin: 1px 0; }
+
+  /* ---- Summary tab content ---- */
+  .summary-tab {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem;
+  }
+  .summary-tab h3 {
+    font-family: 'Inter', serif;
+    font-size: 22px;
+    color: var(--sage-dark);
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border-soft);
+    font-weight: 500;
+  }
+  .summary-tab h3:first-child { margin-top: 0; }
+  .summary-tab .customer-recap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 2rem;
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+  }
+  .summary-tab .recap-row span:first-child {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--sage);
+    font-weight: 600;
+    display: inline-block;
+    width: 95px;
+  }
+  .summary-tab .line-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.5rem;
+    font-size: 13px;
+    table-layout: fixed;
+  }
+  .summary-tab .line-table col.c-num { width: 84px; }
+  .summary-tab .line-table td > div:first-child { overflow-wrap: anywhere; }
+  .summary-tab .line-table th {
+    text-align: left;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--sage);
+    font-weight: 600;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-tab .line-table th.num { text-align: right; }
+  .summary-tab .line-table td {
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--border-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .summary-tab .line-table td.num { text-align: right; }
+  .summary-tab .line-table td.code { font-size: 11px; color: var(--ink-light); }
+  .summary-tab .line-table tr.cat-sub td {
+    background: var(--cream-light);
+    font-weight: 500;
+    color: var(--sage-dark);
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-tab .totals-block {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 24px;
+    max-width: 320px;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .summary-tab .totals-block .total-label { color: var(--ink-light); }
+  .summary-tab .totals-block .total-value { text-align: right; }
+  .summary-tab .totals-block .grand .total-label,
+  .summary-tab .totals-block .grand .total-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--sage-dark);
+    border-top: 1px solid var(--border);
+    padding-top: 6px;
+    margin-top: 4px;
+  }
+  .summary-tab .ship-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 0.5rem;
+  }
+  .summary-tab .ship-table th, .summary-tab .ship-table td {
+    padding: 6px 10px;
+    border: 1px solid var(--border-soft);
+    text-align: left;
+  }
+  .summary-tab .ship-table th {
+    background: var(--cream-light);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--sage-dark);
+    font-weight: 600;
+  }
+  .summary-tab .ship-table tr.current td {
+    background: var(--cream-light);
+    color: var(--terracotta);
+    font-weight: 500;
+  }
+  .summary-tab .empty-note {
+    color: var(--ink-light);
+    font-style: italic;
+    padding: 0.5rem 0;
+    font-size: 13px;
+  }
+
+  /* ---- Shipping tip moved to top of summary bar, larger ---- */
+  .shipping-tip-top {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--terracotta);
+    padding: 0 0 10px;
+    max-width: 1080px;
+    margin: 0 auto 8px;
+    border-bottom: 1px dashed var(--border-soft);
+    display: none;
+  }
+  .shipping-tip-top.qualified { color: var(--sage); }
+  .shipping-tip-top:not(:empty) { display: block; }
+
+  @media (max-width: 720px) {
+    .summary-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .place-btn { grid-column: 1 / -1; }
+  }
+
+  /* ---- Toast ---- */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--sage-dark);
+    color: var(--paper);
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    transition: transform 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ---- Quantity error popover ---- */
+  .qty-popover {
+    position: fixed;
+    z-index: 1200;
+    display: none;
+    background: var(--terracotta);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: 500;
+    padding: 7px 11px;
+    border-radius: 5px;
+    max-width: 230px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+    pointer-events: none;
+  }
+  .qty-popover::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--terracotta);
+  }
+  .qty-popover.below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--terracotta);
+  }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <img class="brand-logo" src="data:image/webp;base64,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" alt="Garden Route">
+    <div class="divider"></div>
+    <div class="subtitle">Wholesale Order Form</div>
+    <div class="tagline">Botanical blends · Dried naturals · Refresher oils</div>
+  </header>
+
+  <div class="storage-warning" id="storage-warning" style="display:none;">
+    <strong>Heads up:</strong> This browser doesn't appear to be saving your progress — you may be in a private/incognito window. Any reload or closing of the browser will lose everything you've entered. Switch to a normal window to have your order saved automatically.
+  </div>
+
+  <div class="save-bar">
+    <span class="save-note">Your progress is saved automatically on this device — you can close this page and return later.</span>
+    <button type="button" class="link-btn" onclick="clearSavedState()">Reset Order Form</button>
+  </div>
+
+  <h2 class="section-label">Order <em>Ship To</em></h2>
+  <div class="customer-card">
+    <div class="form-grid">
+      <div class="full"><label>Customer / Company</label><input type="text" id="f-customer" placeholder="Business name"></div>
+      <div class="full"><label>Street address</label><input type="text" id="f-street"></div>
+      <div class="full"><label>City</label><input type="text" id="f-city"></div>
+      <div><label>State</label><input type="text" id="f-state"></div>
+      <div><label>ZIP</label><input type="text" id="f-zip"></div>
+      <div><label>Email</label><input type="email" id="f-email"></div>
+      <div><label>Phone</label><input type="tel" id="f-phone"></div>
+    </div>
+  </div>
+
+  <h2 class="section-label">Order <em>Details</em></h2>
+  <div class="customer-card">
+    <div class="form-grid">
+      <div><label>PO #</label><input type="text" id="f-po"></div>
+      <div><label>Ship date</label><input type="date" id="f-shipdate"></div>
+      <div><label>FedEx account #</label><input type="text" id="f-fedex"></div>
+      <div><label>Resale Certificate #</label><input type="text" id="f-resalecertificate"></div>
+    </div>
+  </div>
+
+  <h2 class="section-label">Order <em>Form</em></h2>
+  <div class="tabs" id="tabs"></div>
+
+  <div id="sect-fw" class="section active"></div>
+  <div id="sect-ss" class="section"></div>
+  <div id="sect-vf" class="section"></div>
+  <div id="sect-rh" class="section"></div>
+  <div id="sect-rf" class="section"></div>
+  <div id="sect-sm" class="section"></div>
+
+</div>
+
+<div class="summary-bar">
+  <div class="validation-warning" id="validation-warning" style="display:none;"></div>
+  <div class="shipping-tip-top" id="ship-tip"></div>
+  <div class="summary-inner">
+    <div class="sum-block">
+      <div class="label">Subtotal</div>
+      <div class="value" id="d-subtotal">$0.00</div>
+    </div>
+    <div class="sum-block">
+      <div class="label">Shipping</div>
+      <div class="value" id="d-shipping">$0.00</div>
+      <div class="rate" id="d-rate">Rate: 15%</div>
+    </div>
+    <div class="sum-block">
+      <div class="label">Order Total</div>
+      <div class="value total" id="d-total">$0.00</div>
+    </div>
+    <button class="place-btn" id="place-btn" onclick="submitOrder()">
+      <span>Submit Order</span>
+      <svg width="22" height="14" viewBox="0 0 22 14" fill="currentColor" aria-hidden="true" style="vertical-align: -1px; margin-left: 4px;">
+        <ellipse cx="4" cy="4" rx="3" ry="1.4" transform="rotate(-30 4 4)"/>
+        <ellipse cx="9" cy="9" rx="3" ry="1.4" transform="rotate(30 9 9)"/>
+        <ellipse cx="14" cy="4" rx="3" ry="1.4" transform="rotate(-30 14 4)"/>
+        <circle cx="19" cy="7" r="1.6"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="qty-popover" id="qty-popover" role="alert"></div>
+
+<script>
+// ============== DATA ==============
+const FW_SCENTS = [
+  ['AW', 'Aspen Woods'], ['BO', "Bag O' Boo!"], ['CA', 'Cottage Apple'],
+  ['HS', 'Holiday Spruce'], ['MK', 'Mistletoe Kiss'], ['MC', 'Mulled Cider'],
+  ['NP', 'Nutmeg Pear'], ['PO', 'Pomander'], ['WP', 'Winter Pine'],
+  ['IS', 'Indian Summer'], ['PS', 'Pumpkin Spice'],
+];
+const SS_SCENTS = [
+  ['CB', 'Clementine Bergamot'], ['IP', 'Island Proteas'], ['LF', 'Lavender Fields'],
+  ['LS', 'Lakeside'], ['LR', 'Lovely Rose'], ['MI', 'Magnolia & Ivy'],
+  ['OS', 'Ocean Spa'], ['SB', 'Sanibel'], ['WF', 'Wildflowers'],
+  ['VG', 'Vintage Garden'], ['LB', 'Lemon Blossom'],
+];
+const BLEND_VARIANTS = [
+  { prefix: 'BB',  desc: 'Large',   price: 15, step: 12 },
+  { prefix: 'BBS', desc: 'Small',   price: 12, step: 12 },
+  { prefix: 'FO',  desc: 'Oil', price: 6.75,  step: 6  },
+  { prefix: 'BBD', desc: 'Display',   price: 12, step: 1  },
+];
+const VF_ITEMS = [
+  ['VF/MIC-H', 'Mini Indian Corn / Harvest', '8 ears/bag · 12 per case', 9.75],
+  ['VF/MUC-J', 'Muirri Cones / Joyful',       '325g · 12 per case', 8],
+  ['VF/PMP-T', 'Pumpinos / Thankful',         '190g · 12 per case', 8],
+  ['VF/PUT-H', 'Putka Pods / Harvest',        '110g · 12 per case', 8],
+  ['VF/ABS',   'Ambernut Stems Natural',       '12 stems/bag · 12 per case', 8],
+  ['VF/FBC',   'Frosted Birch Cones',          '160g · 12 per case', 8],
+  ['VF/ASA',   'Apple Slices Assorted',        '180g · 12 per case', 8],
+  ['VF/ASG',   'Apple Slices Green',           '180g · 12 per case', 8],
+  ['VF/ASR',   'Apple Slices Red',             '180g · 12 per case', 8],
+  ['VF/OSG',   'Orange Slices Green',          '180g · 12 per case', 8],
+  ['VF/OSO',   'Orange Slices Orange',         '180g · 12 per case', 8],
+  ['VF/JP',    'Juniper Preserved',            '130g · 12 per case', 9.75],
+  ['VF/MICN',  'Mini Indian Corn (No Husk)',  '10 ears/bag · 12 per case', 9.75],
+  ['VF/MIC',   'Mini Indian Corn',             '8 ears/bag · 12 per case', 9.75],
+  ['VF/MUC',   'Muirii Cones',                 '375g · 12 per case', 8],
+  ['VF/SMC',   'Spanish Moss Chartreuse',     '50g · 12 per case', 8],
+  ['VF/PMP',   'Pumpinos',                     '180g · 12 per case', 8],
+  ['VF/WR',    'White Root',                   '18 pieces/bag · 12 per case', 8],
+  ['VF/OG',    'Oranges Green',                '50g · 12 per case', 8],
+  ['VF/OO',    'Oranges Orange',               '18 pieces/bag · 12 per case', 8],
+  ['VF/CSR',   'Canella Stems Red',            '130g · 12 per case', 8],
+  ['VF/DW',    'Driftwood',                    '20 piece · 12 per case', 9.75],
+  ['VF/PTP',   'Putka Pods',                   '95g · 12 per case', 8],
+  ['VF/PCW',   'Pine Cones Tipped White',     '10 cones/bag · 12 per case', 8],
+  ['VF/HC',    'Hemlock Cones',                '120g · 12 per case', 8],
+  ['VF/MBL',   'Mini Birch Logs',              '16 logs/bag · 12 per case', 8],
+  ['VF/RMC',   'Reindeer Moss Chartreuse',     '70g · 12 per case', 8],
+];
+const RH_ITEMS = [
+  ['RH/CA', 'Cottage Apple', 9.75], ['RH/HS', 'Holiday Spice', 9.75],
+  ['RH/OH', 'Orange Harvest', 9.75], ['RH/PS', 'Pumpkin Spice', 9.75],
+  ['RH/CN', 'Cinnamon', 9.75], ['RH/SD', 'Snickerdoodle', 9.75],
+  ['RH/WP', 'Winter Pine', 9.75], ['RH/BO', 'BOO!', 9.75],
+];
+const RF_ITEMS = [
+  ['FO/AW','Aspen Woods'],['FO/BO','Boo!'],['FO/CA','Cottage Apple'],
+  ['FO/CB','Clementine Bergamot'],['FO/CN','Cinnamon'],['FO/GF','Green Apple Fig'],
+  ['FO/HO','Holiday Orchard'],['FO/HOS','Holiday Spruce'],['FO/HS','Holiday Spice'],
+  ['FO/IP','Island Proteas'],['FO/IS','Indian Summer'],['FO/LB','Lemon Blossom'],
+  ['FO/LF','Lavender Fields'],['FO/LR','Lovely Rose'],['FO/LS','Lakeside'],
+  ['FO/MB','Merry Berry'],['FO/MC','Mulled Cider'],['FO/MI','Magnolia & Ivy'],
+  ['FO/MK','Mistletoe Kiss'],['FO/NP','Nutmeg Pear'],['FO/NT','Nantucket'],
+  ['FO/OH','Orange Harvest'],['FO/OS','Ocean Spa'],['FO/PO','Pomander'],
+  ['FO/PS','Pumpkin Spice'],['FO/SB','Sanibel'],['FO/SD','Snickerdoodle'],
+  ['FO/VG','Vintage Garden'],['FO/VS','Vanilla Spruce'],['FO/WF','Wildflowers'],
+  ['FO/WP','Winter Pine'],
+];
+const TAB_DEFS = [
+  ['fw', 'Fall / Winter'], ['ss', 'Spring / Summer'],
+  ['vf', 'Vase Fillers'], ['rh', 'Rose Hips'], ['rf', 'Refresher Oils'],
+  ['sm', 'Summary'],
+];
+
+// ============== PRODUCT IMAGES ==============
+// Blend scents keyed by 2-letter scent code (one photo per scent).
+// Lakeside (LS) and Sanibel (SB) have no photo yet.
+const SCENT_IMG = {
+  AW: 'photos/fallwinter/AW Small.jpeg',
+  BO: 'photos/fallwinter/BO Small.jpeg',
+  CA: 'photos/fallwinter/CA Small.jpeg',
+  HS: 'photos/fallwinter/HS Small.jpeg',
+  MK: 'photos/fallwinter/MK Small.jpeg',
+  MC: 'photos/fallwinter/MC Small.jpeg',
+  NP: 'photos/fallwinter/NP Small.jpeg',
+  PO: 'photos/fallwinter/PO Small.jpeg',
+  WP: 'photos/fallwinter/WP Small.jpeg',
+  IS: 'photos/fallwinter/IS Small.jpeg',
+  PS: 'photos/fallwinter/PS Small.jpeg',
+  CB: 'photos/springsummer/CB Small.jpeg',
+  IP: 'photos/springsummer/IP Small.jpeg',
+  LF: 'photos/springsummer/LF Small.jpeg',
+  LR: 'photos/springsummer/LR Small.jpeg',
+  MI: 'photos/springsummer/MI Small.jpeg',
+  OS: 'photos/springsummer/OS Small.jpeg',
+  VG: 'photos/springsummer/VG Small.jpeg',
+  WF: 'photos/springsummer/WF Small.jpeg',
+  LB: 'photos/springsummer/LB Small.jpeg',
+};
+
+// Vase fillers and rose hips keyed by full item code.
+const ITEM_IMG = {
+  'RH/CA': 'photos/rosehips/Cottage Apple Medium.jpeg',
+  'RH/HS': 'photos/rosehips/Holiday Spice Medium.jpeg',
+  'RH/OH': 'photos/rosehips/Orange Harvest Medium.jpeg',
+  'RH/PS': 'photos/rosehips/Pumpkin Spice Medium.jpeg',
+  'RH/CN': 'photos/rosehips/Cinnamon Medium.jpeg',
+  'RH/SD': 'photos/rosehips/Snickerdoodle Medium.jpeg',
+  'RH/WP': 'photos/rosehips/Winter Pine Medium.jpeg',
+  'RH/BO': 'photos/rosehips/BOO! Medium.jpeg',
+  'VF/MIC-H': 'photos/vasefillers/miniindiancornharvest Small.jpeg',
+  'VF/MUC-J': 'photos/vasefillers/muirriconesjoyful Small.jpeg',
+  'VF/PMP-T': 'photos/vasefillers/pumpinosthankful Small.jpeg',
+  'VF/PUT-H': 'photos/vasefillers/putkapodsharvest Small.jpeg',
+  'VF/ABS': 'photos/vasefillers/ambernutstemsnatural Small.jpeg',
+  'VF/FBC': 'photos/vasefillers/frostedbirchcones Small.jpeg',
+  'VF/ASA': 'photos/vasefillers/appleslicesassorted Small.jpeg',
+  'VF/ASG': 'photos/vasefillers/appleslicesgreen Small.jpeg',
+  'VF/ASR': 'photos/vasefillers/appleslicesred Small.jpeg',
+  'VF/OSG': 'photos/vasefillers/orangeslicesgreen Small.jpeg',
+  'VF/OSO': 'photos/vasefillers/orangeslicesorange Small.jpeg',
+  'VF/JP': 'photos/vasefillers/juniperpreserved Small.jpeg',
+  'VF/MICN': 'photos/vasefillers/miniindiancornnohusk Small.jpeg',
+  'VF/MIC': 'photos/vasefillers/miniindiancorn Small.jpeg',
+  'VF/MUC': 'photos/vasefillers/muiriicones Small.jpeg',
+  'VF/SMC': 'photos/vasefillers/spanishmosschartreuse Small.jpeg',
+  'VF/PMP': 'photos/vasefillers/pumpinos Small.jpeg',
+  'VF/WR': 'photos/vasefillers/whiteroot Small.jpeg',
+  'VF/OG': 'photos/vasefillers/orangesgreen Small.jpeg',
+  'VF/OO': 'photos/vasefillers/orangesorange Small.jpeg',
+  'VF/CSR': 'photos/vasefillers/canellastemsred Small.jpeg',
+  'VF/DW': 'photos/vasefillers/driftwood Small.jpeg',
+  'VF/PTP': 'photos/vasefillers/putkapods Small.jpeg',
+  'VF/PCW': 'photos/vasefillers/pineconestippedwhite Small.jpeg',
+  'VF/HC': 'photos/vasefillers/hemlockcones Small.jpeg',
+  'VF/MBL': 'photos/vasefillers/minibirchlogs Small.jpeg',
+  'VF/RMC': 'photos/vasefillers/reindeermodsschartreuse Small.jpeg',
+};
+
+// Encode spaces etc. for use in an <img src>
+function imgSrc(path) { return path ? encodeURI(path) : ''; }
+
+// ============== STATE ==============
+const qty = {};
+
+// ============== PERSISTENCE ==============
+const STORAGE_KEY = 'gr-order-form-v1';
+const FORM_FIELDS = ['f-customer','f-street','f-city','f-state','f-zip','f-email','f-phone',
+  'f-po','f-shipdate','f-fedex','f-resalecertificate'];
+
+function saveState() {
+  const data = { qty: {}, fields: {} };
+  Object.entries(qty).forEach(([code, v]) => { if (v.qty > 0) data.qty[code] = v.qty; });
+  FORM_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data.fields[id] = el.value;
+  });
+  const activeSection = document.querySelector('.section.active');
+  if (activeSection) data.activeTab = activeSection.id.replace('sect-', '');
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+}
+
+function restoreState() {
+  let data;
+  try { data = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (e) { return; }
+  if (!data) return;
+  if (data.fields) {
+    FORM_FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data.fields[id] != null) el.value = data.fields[id];
+    });
+  }
+  if (data.qty) {
+    Object.entries(data.qty).forEach(([code, q]) => {
+      const input = document.getElementById('q-' + code.replace(/\//g, '-'));
+      if (input && q > 0) {
+        input.value = q;
+        input.dispatchEvent(new Event('input'));
+      }
+    });
+  }
+  if (data.activeTab) activateTab(data.activeTab);
+}
+
+// Activate a tab by its id (matches a TAB_DEFS entry + its button)
+function activateTab(id) {
+  const idx = TAB_DEFS.findIndex(t => t[0] === id);
+  const btns = document.querySelectorAll('#tabs .tab');
+  if (idx >= 0 && btns[idx]) switchTab(id, btns[idx]);
+}
+
+function showStorageWarning() {
+  const bar = document.getElementById('storage-warning');
+  if (bar) bar.style.display = 'block';
+}
+
+function checkStorageReliability() {
+  // Hard failure: storage is blocked entirely
+  try {
+    const k = '__gr_test__';
+    localStorage.setItem(k, '1');
+    localStorage.removeItem(k);
+  } catch (e) {
+    showStorageWarning();
+    return;
+  }
+  // Heuristic: private/incognito sessions usually expose a very small quota
+  if (navigator.storage && navigator.storage.estimate) {
+    navigator.storage.estimate().then(({ quota }) => {
+      if (typeof quota === 'number' && quota < 120 * 1024 * 1024) showStorageWarning();
+    }).catch(() => {});
+  }
+}
+
+function clearSavedState() {
+  if (!confirm('Start a new order? This will erase the saved order on this device.')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  location.reload();
+}
+
+// ============== BUILDERS ==============
+function buildTabs() {
+  const tabs = document.getElementById('tabs');
+  TAB_DEFS.forEach(([id, label], i) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (i === 0 ? ' active' : '');
+    b.textContent = label;
+    b.onclick = () => switchTab(id, b);
+    tabs.appendChild(b);
+  });
+}
+function switchTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sect-' + id).classList.add('active');
+  btn.classList.add('active');
+  saveState();
+}
+
+function buildBlendSection(scents, sectId) {
+  const sect = document.getElementById(sectId);
+  const blendTotalLabel = sectId === 'sect-fw' ? METRIC_LABELS.fall_winter_total : METRIC_LABELS.spring_summer_total;
+  sect.appendChild(makeTabSummary(sectId, ['large_cases','small_cases', 'oils', 'displayBags', 'total'], blendTotalLabel));
+  const note = document.createElement('div');
+  note.className = 'qty-note';
+  note.innerHTML = '<strong>Quantities:</strong><br>Large and small blends are ordered in multiples of 12 (one case = 12).<br>Refresher oils are ordered in multiples of 6.<br>Display bags can be ordered individually.';
+  sect.appendChild(note);
+  const grid = document.createElement('div');
+  grid.className = 'scent-grid';
+  scents.forEach(([code, name]) => {
+    const card = document.createElement('div');
+    card.className = 'scent-card';
+    card.id = 'sc-' + code;
+    card.innerHTML = `
+      <div class="scent-head">
+        <div class="scent-name">${name}</div>
+        <div class="scent-sub zero" id="sub-${code}">$0.00</div>
+      </div>
+      <div class="scent-body">
+        ${SCENT_IMG[code] ? `<img class="scent-side" src="${imgSrc(SCENT_IMG[code])}" alt="${name}" loading="lazy">` : ''}
+        <div class="scent-rows">
+          ${BLEND_VARIANTS.map(v => {
+            const itemCode = v.prefix + '/' + code;
+            const qid = 'q-' + itemCode.replace(/\//g, '-');
+            return `<div class="product-row">
+              <div class="prow-label">
+                <span class="name">${v.desc}</span>
+                <span class="code">- ${itemCode}</span>
+              </div>
+              <div class="price">$${v.price.toFixed(2)}</div>
+              <input type="number" min="0" step="${v.step}" value="" placeholder="0" id="${qid}" class="qty"
+                     data-code="${itemCode}" data-price="${v.price}" data-name="${v.desc} ${name}" data-step="${v.step}"
+                     oninput="onQtyChange('${itemCode}', ${v.price}, this); updateBlendSub('${code}')">
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  sect.appendChild(grid);
+}
+
+function buildVaseFillers() {
+  const sect = document.getElementById('sect-vf');
+  sect.appendChild(makeTabSummary('sect-vf', ['cases', 'total'], METRIC_LABELS.vase_fillers_total));
+  const note = document.createElement('div');
+  note.className = 'qty-note';
+  note.innerHTML = '<strong>Quantities:</strong> Vase fillers are ordered in multiples of 12 (one case = 12 per item).';
+  sect.appendChild(note);
+  const grid = document.createElement('div');
+  grid.className = 'item-grid';
+  VF_ITEMS.forEach(([code, name, meta, price]) => {
+    const qid = 'q-' + code.replace(/\//g, '-');
+    const cardId = 'ic-' + code.replace(/\//g, '-');
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.id = cardId;
+    card.innerHTML = `
+      ${ITEM_IMG[code] ? `<img class="item-img" src="${imgSrc(ITEM_IMG[code])}" alt="${name}" loading="lazy">` : ''}
+      <div class="item-name">${name}</div>
+      <div class="item-meta">${meta}</div>
+      <div class="item-foot">
+        <span class="item-price">$${price.toFixed(2)} / unit</span>
+        <input type="number" min="0" step="12" value="" placeholder="0" id="${qid}" class="qty" style="width:72px;"
+               data-code="${code}" data-price="${price}" data-name="${name}" data-step="12"
+               oninput="onQtyChange('${code}', ${price}, this); toggleCard('${cardId}', this.value); updateItemSub('${cardId}', ${price}, this.value)">
+      </div>
+      <div class="item-sub" id="sub-${cardId}">$0.00</div>`;
+    grid.appendChild(card);
+  });
+  sect.appendChild(grid);
+}
+
+function buildRoseHips() {
+  const sect = document.getElementById('sect-rh');
+  sect.appendChild(makeTabSummary('sect-rh', ['cases', 'total'], METRIC_LABELS.rose_hips_total));
+  const note = document.createElement('div');
+  note.className = 'qty-note';
+  note.id = 'rh-rule-note';
+  note.innerHTML = '<strong>Quantities:</strong> Rose hips are ordered in multiples of 12, and the total across all scents must complete casepacks of 24.';
+  sect.appendChild(note);
+  const grid = document.createElement('div');
+  grid.className = 'item-grid';
+  RH_ITEMS.forEach(([code, name, price]) => {
+    const qid = 'q-' + code.replace(/\//g, '-');
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.id = 'ic-' + code.replace(/\//g, '-');
+    card.innerHTML = `
+      ${ITEM_IMG[code] ? `<img class="item-img" src="${imgSrc(ITEM_IMG[code])}" alt="${name}" loading="lazy">` : ''}
+      <div class="item-name">${name}</div>
+      <div class="item-meta">${code} · Rose Hips</div>
+      <div class="item-foot">
+        <span class="item-price">$${price.toFixed(2)}</span>
+        <input type="number" min="0" step="12" value="" placeholder="0" id="${qid}" class="qty" style="width:64px;"
+               data-code="${code}" data-price="${price}" data-name="${name} Rose Hips" data-step="12"
+               oninput="onQtyChange('${code}', ${price}, this); toggleCard('ic-${code.replace(/\//g, '-')}', this.value)">
+      </div>`;
+    grid.appendChild(card);
+  });
+  sect.appendChild(grid);
+}
+
+function buildRefresherOils() {
+  const sect = document.getElementById('sect-rf');
+  sect.appendChild(makeTabSummary('sect-rf', ['oils', 'total'], METRIC_LABELS.refresher_oils_total));
+  const note = document.createElement('div');
+  note.className = 'qty-note';
+  note.id = 'rf-rule-note';
+  note.innerHTML = '<strong>Quantities:</strong> Refresher oils are ordered in multiples of 6.';
+  sect.appendChild(note);
+  const grid = document.createElement('div');
+  grid.className = 'rf-grid';
+  RF_ITEMS.forEach(([code, name]) => {
+    const qid = 'q-' + code.replace(/\//g, '-');
+    const rowId = 'rr-' + code.replace(/\//g, '-');
+    const row = document.createElement('div');
+    row.className = 'rf-row';
+    row.id = rowId;
+    row.innerHTML = `
+      <div>
+        <div class="rf-name">${name}</div>
+        <div class="rf-code">${code}</div>
+      </div>
+      <div class="rf-price">$6.75</div>
+      <input type="number" min="0" step="6" value="" placeholder="0" id="${qid}" class="qty"
+             data-code="${code}" data-price="6.75" data-name="Refresher Oil ${name}" data-step="6"
+             oninput="onQtyChange('${code}', 6.75, this); toggleCard('${rowId}', this.value)">
+    `;
+    grid.appendChild(row);
+  });
+  sect.appendChild(grid);
+}
+
+// ============== STATE / CALC ==============
+function onQtyChange(code, price, input) {
+  const v = Math.max(0, parseInt(input.value) || 0);
+  qty[code] = { qty: v, price, name: input.dataset.name };
+  input.classList.toggle('has-value', v > 0);
+  const ltId = 'lt-' + ('q-' + code.replace(/\//g, '-'));
+  const lt = document.getElementById(ltId);
+  if (lt) {
+    lt.textContent = '$' + (v * price).toFixed(2);
+    lt.classList.toggle('zero', v === 0);
+  }
+  recalc();
+  saveState();
+}
+
+function toggleCard(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('has-items', parseInt(val) > 0);
+}
+
+function updateItemSub(cardId, price, val) {
+  const v = Math.max(0, parseInt(val) || 0);
+  const el = document.getElementById('sub-' + cardId);
+  if (el) el.textContent = '$' + (v * price).toFixed(2);
+}
+
+function updateBlendSub(scentCode) {
+  let sub = 0;
+  BLEND_VARIANTS.forEach(v => {
+    const c = v.prefix + '/' + scentCode;
+    const q = qty[c];
+    if (q) sub += q.qty * q.price;
+  });
+  const el = document.getElementById('sub-' + scentCode);
+  if (el) {
+    el.textContent = '$' + sub.toFixed(2);
+    el.classList.toggle('zero', sub === 0);
+  }
+  const card = document.getElementById('sc-' + scentCode);
+  if (card) card.classList.toggle('has-items', sub > 0);
+}
+
+// ============== TAB SUMMARIES ==============
+const METRIC_LABELS = {
+  cases: 'Cases',
+  large_cases: 'Large Cases',
+  small_cases: 'Small Cases',
+  oils: 'Oils',
+  displayBags: 'Display Bags',
+  fall_winter_total: 'Fall / Winter Total',
+  spring_summer_total: 'Spring / Summer Total',
+  vase_fillers_total: 'Vase Fillers Total',
+  rose_hips_total: 'Rose Hips Total',
+  refresher_oils_total: 'Refresher Oils Total',
+  total: 'Total',
+  units: 'Total Units',
+};
+
+function makeTabSummary(sectId, metrics, totalLabel) {
+  const wrap = document.createElement('div');
+  wrap.className = 'tab-summary';
+  const inner = document.createElement('div');
+  inner.className = 'tab-summary-inner';
+  metrics.forEach(m => {
+    const cell = document.createElement('div');
+    cell.className = 'ts-cell' + (m === 'total' ? ' total' : '');
+    const label = (m === 'total' && totalLabel) ? totalLabel : METRIC_LABELS[m];
+    cell.innerHTML = `
+      <div class="ts-label">${label}</div>
+      <div class="ts-value" id="ts-${sectId}-${m}">${m === 'total' ? '$0.00' : '0'}</div>
+    `;
+    inner.appendChild(cell);
+  });
+  wrap.appendChild(inner);
+  return wrap;
+}
+
+// Compute aggregate metrics for an arbitrary section
+function computeTabMetrics(scope) {
+  // scope: 'fw', 'ss' = scent codes from FW_SCENTS/SS_SCENTS
+  //        'vf', 'rh' = item code prefix
+  //        'rf' = standalone refresher oils tab (FO/ codes from RF_ITEMS)
+  let largeUnits = 0, smallUnits = 0, oils = 0, displayBags = 0, units = 0, total = 0;
+
+  if (scope === 'fw' || scope === 'ss') {
+    const scents = scope === 'fw' ? FW_SCENTS : SS_SCENTS;
+    scents.forEach(([code]) => {
+      BLEND_VARIANTS.forEach(v => {
+        const q = qty[v.prefix + '/' + code];
+        if (!q || q.qty <= 0) return;
+        total += q.qty * q.price;
+        if (v.prefix === 'BB') largeUnits += q.qty;
+        else if (v.prefix === 'BBS') smallUnits += q.qty;
+        else if (v.prefix === 'FO') oils += q.qty;
+        else if (v.prefix === 'BBD') displayBags += q.qty;
+      });
+    });
+  } else if (scope === 'vf') {
+    VF_ITEMS.forEach(([code, , , price]) => {
+      const q = qty[code];
+      if (q && q.qty > 0) { total += q.qty * price; units += q.qty; }
+    });
+  } else if (scope === 'rh') {
+    RH_ITEMS.forEach(([code, , price]) => {
+      const q = qty[code];
+      if (q && q.qty > 0) { total += q.qty * price; units += q.qty; }
+    });
+  } else if (scope === 'rf') {
+    RF_ITEMS.forEach(([code]) => {
+      const q = qty[code];
+      if (q && q.qty > 0) { total += q.qty * 6.75; oils += q.qty; }
+    });
+  }
+  return {
+    large_cases: Math.floor(largeUnits / 12),
+    small_cases: Math.floor(smallUnits / 12),
+    oils,
+    displayBags,
+    units: units || (scope === 'vf' ? Math.floor(units) : units),
+    total,
+  };
+}
+
+function updateAllTabSummaries() {
+  ['fw', 'ss'].forEach(scope => {
+    const m = computeTabMetrics(scope);
+    setText(`ts-sect-${scope}-large_cases`, m.large_cases);
+    setText(`ts-sect-${scope}-small_cases`, m.small_cases);
+    setText(`ts-sect-${scope}-oils`, m.oils);
+    setText(`ts-sect-${scope}-displayBags`, m.displayBags);
+    setText(`ts-sect-${scope}-total`, '$' + m.total.toFixed(2));
+  });
+  const mVf = computeTabMetrics('vf');
+  setText('ts-sect-vf-cases', Math.floor(mVf.units / 12));
+  setText('ts-sect-vf-total', '$' + mVf.total.toFixed(2));
+  const mRh = computeTabMetrics('rh');
+  setText('ts-sect-rh-cases', Math.floor(mRh.units / 24));
+  setText('ts-sect-rh-total', '$' + mRh.total.toFixed(2));
+  const mRf = computeTabMetrics('rf');
+  setText('ts-sect-rf-oils', mRf.oils);
+  setText('ts-sect-rf-total', '$' + mRf.total.toFixed(2));
+}
+
+function setText(id, txt) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = txt;
+}
+
+// ============== VALIDATION ==============
+// Returns { issues: [...], hasNonOil: bool, totalOils: number }
+function validate() {
+  const issues = [];
+
+  // Compute aggregates needed for the 24-pack rules
+  let totalOils = 0;
+  let totalRoseHips = 0;
+  let hasNonOilProduct = false;
+  Object.entries(qty).forEach(([code, v]) => {
+    if (v.qty <= 0) return;
+    if (code.startsWith('FO/')) totalOils += v.qty;
+    else hasNonOilProduct = true;  // any BB, BBS, BBD, VF/, RH/ counts
+    if (code.startsWith('RH/')) totalRoseHips += v.qty;
+  });
+
+  // Per-input step checks → shown as a popover near the input (not the banner)
+  let invalidCount = 0;
+  document.querySelectorAll('input.qty').forEach(input => {
+    const v = parseInt(input.value) || 0;
+    const step = parseInt(input.dataset.step) || 1;
+    input.classList.remove('invalid');
+    if (v > 0 && step > 1 && v % step !== 0) {
+      input.classList.add('invalid');
+      const next = Math.ceil(v / step) * step;
+      input.dataset.errMsg = `Use a multiple of ${step}. Next valid: ${next}`;
+      invalidCount++;
+    } else {
+      delete input.dataset.errMsg;
+    }
+  });
+
+  // Rose hips must always complete casepacks of 24
+  if (totalRoseHips > 0 && totalRoseHips % 24 !== 0) {
+    const next = Math.ceil(totalRoseHips / 24) * 24;
+    issues.push(`Rose hips must total a multiple of 24 (currently ${totalRoseHips}) — next valid quantity is ${next}. Add ${24 - (totalRoseHips % 24)} more.`);
+  }
+
+  // 24-pack rule when no other products in order
+  if (!hasNonOilProduct && totalOils > 0 && totalOils % 24 !== 0) {
+    const next = Math.ceil(totalOils / 24) * 24;
+    issues.push(`Refresher-oils-only orders must total a multiple of 24 (currently ${totalOils}) — next valid quantity is ${next}. Add ${24 - (totalOils % 24)} more.`);
+  }
+
+  return { issues, hasNonOilProduct, totalOils, totalRoseHips, invalidCount };
+}
+
+// Floating popover anchored to a quantity input
+function showQtyPopover(input, msg) {
+  const p = document.getElementById('qty-popover');
+  if (!p) return;
+  p.textContent = msg;
+  p.style.display = 'block';
+  const r = input.getBoundingClientRect();
+  const pr = p.getBoundingClientRect();
+  let left = r.left + r.width / 2 - pr.width / 2;
+  left = Math.max(8, Math.min(left, window.innerWidth - pr.width - 8));
+  let top = r.top - pr.height - 9;
+  let below = false;
+  if (top < 8) { top = r.bottom + 9; below = true; }  // flip under if no room above
+  p.classList.toggle('below', below);
+  p.style.left = left + 'px';
+  p.style.top = top + 'px';
+}
+
+function hideQtyPopover() {
+  const p = document.getElementById('qty-popover');
+  if (p) p.style.display = 'none';
+}
+
+// Show the popover only for the focused input when it's invalid
+function updateQtyPopover() {
+  const a = document.activeElement;
+  if (a && a.classList && a.classList.contains('qty') && a.classList.contains('invalid')) {
+    showQtyPopover(a, a.dataset.errMsg || 'Invalid quantity');
+  } else {
+    hideQtyPopover();
+  }
+}
+
+function renderValidation(v) {
+  const box = document.getElementById('validation-warning');
+  if (v.issues.length === 0) {
+    box.style.display = 'none';
+    box.innerHTML = '';
+  } else {
+    box.style.display = 'block';
+    box.innerHTML = '<strong>Please fix:</strong><ul>' +
+      v.issues.map(i => `<li>${i}</li>`).join('') + '</ul>';
+  }
+  // Update refresher-oil tab note text to reflect current rule
+  const note = document.getElementById('rf-rule-note');
+  if (note) {
+    if (!v.hasNonOilProduct) {
+      note.innerHTML = '<strong>Quantities:</strong> Refresher oils are ordered in multiples of 6</br>Since this order contains no blends, vase fillers, or rose hips, the total across all scents must complete casepacks of 24.';
+    } else {
+      note.innerHTML = '<strong>Quantities:</strong> Refresher oils are ordered in multiples of 6.';
+    }
+  }
+}
+
+// ============== SUMMARY TAB ==============
+function buildSummaryTab() {
+  const sect = document.getElementById('sect-sm');
+  sect.innerHTML = `
+    <div class="summary-tab" id="summary-tab-content">
+      <h3>Customer</h3>
+      <div class="customer-recap" id="recap-customer"></div>
+
+      <h3>Order Details</h3>
+      <div class="customer-recap" id="recap-order"></div>
+
+      <h3>Line Items</h3>
+      <div id="recap-items"></div>
+
+      <h3>Shipping Tiers</h3>
+      <table class="ship-table" id="recap-ship-tiers">
+        <thead><tr><th>Order Subtotal</th><th>Shipping Rate</th></tr></thead>
+        <tbody>
+          <tr data-tier="0"><td>Under $500</td><td>15%</td></tr>
+          <tr data-tier="500"><td>$500 – $1,999.99</td><td>12%</td></tr>
+          <tr data-tier="2000"><td>$2,000 – $2,999.99</td><td>10%</td></tr>
+          <tr data-tier="3000"><td>$3,000 and up</td><td>Free</td></tr>
+        </tbody>
+      </table>
+
+      <div class="totals-block" id="recap-totals"></div>
+    </div>
+  `;
+}
+
+function updateSummaryTab() {
+  // Customer
+  const cust = document.getElementById('recap-customer');
+  const order = document.getElementById('recap-order');
+  if (!cust) return;
+  const get = id => document.getElementById(id).value || '—';
+  cust.innerHTML = `
+    <div class="recap-row"><span>Company</span> ${get('f-customer')}</div>
+    <div class="recap-row"><span>Email</span> ${get('f-email')}</div>
+    <div class="recap-row"><span>Street</span> ${get('f-street')}</div>
+    <div class="recap-row"><span>Phone</span> ${get('f-phone')}</div>
+    <div class="recap-row"><span>City</span> ${get('f-city')}</div>
+    <div class="recap-row"><span>State</span> ${get('f-state')}</div>
+    <div class="recap-row"><span>ZIP</span> ${get('f-zip')}</div>
+  `;
+  order.innerHTML = `
+    <div class="recap-row"><span>PO #</span> ${get('f-po')}</div>
+    <div class="recap-row"><span>Order date</span> ${new Date().toISOString().slice(0, 10)} <em style="color:var(--ink-light)">(set when submitted)</em></div>
+    <div class="recap-row"><span>Ship date</span> ${get('f-shipdate')}</div>
+    <div class="recap-row"><span>FedEx acct</span> ${get('f-fedex')}</div>
+    <div class="recap-row"><span>Resale Cert</span> ${get('f-resalecertificate')}</div>
+  `;
+
+  // Group line items by category
+  const groups = {
+    'Fall / Winter Blends':  { rows: [], pred: c => c.match(/^(BB|BBS|FO|BBD)\/(AW|BO|CA|HS|MK|MC|NP|PO|WP|IS|PS)$/) },
+    'Spring / Summer Blends':{ rows: [], pred: c => c.match(/^(BB|BBS|FO|BBD)\/(CB|IP|LF|LS|LR|MI|OS|SB|WF|VG|LB)$/) },
+    'Vase Fillers':          { rows: [], pred: c => c.startsWith('VF/') },
+    'Rose Hips':             { rows: [], pred: c => c.startsWith('RH/') },
+    'Refresher Oils (standalone)': { rows: [], pred: c => RF_ITEMS.some(r => r[0] === c) },
+  };
+
+  Object.entries(qty).forEach(([code, v]) => {
+    if (v.qty <= 0) return;
+    for (const [, g] of Object.entries(groups)) {
+      if (g.pred(code)) { g.rows.push([code, v.name, v.qty, v.price, v.qty * v.price]); return; }
+    }
+  });
+
+  const itemsHtml = Object.entries(groups).map(([cat, g]) => {
+    if (g.rows.length === 0) return '';
+    const catSub = g.rows.reduce((s, r) => s + r[4], 0);
+    return `
+      <table class="line-table">
+        <colgroup>
+          <col>
+          <col class="c-num">
+          <col class="c-num">
+          <col class="c-num">
+        </colgroup>
+        <thead><tr>
+          <th>${cat}</th>
+          <th class="num">Qty</th>
+          <th class="num">Price</th>
+          <th class="num">Amount</th>
+        </tr></thead>
+        <tbody>
+          ${g.rows.map(r => `<tr>
+            <td><div>${r[1]}</div><div class="code">${r[0]}</div></td>
+            <td class="num">${r[2]}</td>
+            <td class="num">$${r[3].toFixed(2)}</td>
+            <td class="num">$${r[4].toFixed(2)}</td>
+          </tr>`).join('')}
+          <tr class="cat-sub"><td colspan="3">Subtotal · ${cat}</td><td class="num">$${catSub.toFixed(2)}</td></tr>
+        </tbody>
+      </table>
+    `;
+  }).join('');
+
+  const itemsEl = document.getElementById('recap-items');
+  itemsEl.innerHTML = itemsHtml || '<div class="empty-note">No items added yet — add quantities on the other tabs.</div>';
+
+  // Totals
+  const sub = parseFloat(document.getElementById('d-subtotal').textContent.replace('$',''));
+  const ship = parseFloat(document.getElementById('d-shipping').textContent.replace('$',''));
+  const total = parseFloat(document.getElementById('d-total').textContent.replace('$',''));
+  const rate = document.getElementById('d-rate').textContent;
+  document.getElementById('recap-totals').innerHTML = `
+    <div class="total-label">Subtotal</div><div class="total-value">$${sub.toFixed(2)}</div>
+    <div class="total-label">Shipping (${rate.replace('Rate: ', '')})</div><div class="total-value">$${ship.toFixed(2)}</div>
+    <div class="grand total-label">Order Total</div><div class="grand total-value">$${total.toFixed(2)}</div>
+  `;
+
+  // Highlight current tier in shipping table
+  document.querySelectorAll('#recap-ship-tiers tbody tr').forEach(tr => tr.classList.remove('current'));
+  let activeTier = '0';
+  if (sub >= 3000) activeTier = '3000';
+  else if (sub >= 2000) activeTier = '2000';
+  else if (sub >= 500) activeTier = '500';
+  if (sub > 0) {
+    const tr = document.querySelector(`#recap-ship-tiers tbody tr[data-tier="${activeTier}"]`);
+    if (tr) tr.classList.add('current');
+  }
+}
+
+function shippingRate(sub) {
+  if (sub >= 3000) return 0;
+  if (sub >= 2000) return 0.10;
+  if (sub >= 500)  return 0.12;
+  return 0.15;
+}
+
+function recalc() {
+  let sub = 0;
+  Object.values(qty).forEach(q => { if (q.qty > 0) sub += q.qty * q.price; });
+  const rate = shippingRate(sub);
+  const shipping = sub * rate;
+  const total = sub + shipping;
+  document.getElementById('d-subtotal').textContent = '$' + sub.toFixed(2);
+  document.getElementById('d-shipping').textContent = '$' + shipping.toFixed(2);
+  document.getElementById('d-rate').textContent = 'Rate: ' + (rate === 0 ? 'Free' : (rate * 100).toFixed(0) + '%');
+  document.getElementById('d-total').textContent = '$' + total.toFixed(2);
+
+  // Shipping tip (now at top of summary bar, 18px)
+  const tip = document.getElementById('ship-tip');
+  if (sub === 0) {
+    tip.textContent = '';
+    tip.classList.remove('qualified');
+  } else if (sub >= 3000) {
+    tip.innerHTML = '<svg width="18" height="11" viewBox="0 0 14 9" fill="currentColor" style="vertical-align:-2px;margin-right:8px;"><ellipse cx="3" cy="3" rx="2.4" ry="1.1" transform="rotate(-30 3 3)"/><ellipse cx="7" cy="6" rx="2.4" ry="1.1" transform="rotate(30 7 6)"/><ellipse cx="11" cy="3" rx="2.4" ry="1.1" transform="rotate(-30 11 3)"/></svg>You Are Eligible for Free Shipping<svg width="18" height="11" viewBox="0 0 14 9" fill="currentColor" style="vertical-align:-2px;margin-left:8px;transform:scaleX(-1);"><ellipse cx="3" cy="3" rx="2.4" ry="1.1" transform="rotate(-30 3 3)"/><ellipse cx="7" cy="6" rx="2.4" ry="1.1" transform="rotate(30 7 6)"/><ellipse cx="11" cy="3" rx="2.4" ry="1.1" transform="rotate(-30 11 3)"/></svg>';
+    tip.classList.add('qualified');
+  } else {
+    const next = sub < 500 ? 500 : sub < 2000 ? 2000 : 3000;
+    const nextRate = sub < 500 ? '12% shipping' : sub < 2000 ? '10% shipping' : 'free shipping';
+    tip.textContent = `Add $${(next - sub).toFixed(2)} more for ${nextRate} rate`;
+    tip.classList.remove('qualified');
+  }
+
+  // Per-tab summary widgets, summary tab, validation
+  updateAllTabSummaries();
+  updateSummaryTab();
+  const v = validate();
+  renderValidation(v);
+  updateQtyPopover();
+
+  document.getElementById('place-btn').disabled = (sub === 0) || (v.issues.length > 0) || (v.invalidCount > 0);
+}
+
+// ============== SUBMIT (xlsx + mailto) ==============
+function submitOrder() {
+  const items = Object.entries(qty).filter(([_, v]) => v.qty > 0);
+  if (items.length === 0) { showToast('Add at least one item.'); return; }
+  const v = validate();
+  if (v.issues.length > 0 || v.invalidCount > 0) { showToast('Please fix the highlighted quantities first.'); return; }
+
+  const customer = document.getElementById('f-customer').value || 'Customer';
+  const street = document.getElementById('f-street').value || '';
+  const city = document.getElementById('f-city').value || '';
+  const state = document.getElementById('f-state').value || '';
+  const zip = document.getElementById('f-zip').value || '';
+  const email = document.getElementById('f-email').value || '';
+  const phone = document.getElementById('f-phone').value || '';
+  const po = document.getElementById('f-po').value || 'PO-' + new Date().toISOString().slice(0, 10);
+  const orderDate = new Date().toISOString().slice(0, 10);
+  const shipDate = document.getElementById('f-shipdate').value || '';
+  const fedex = document.getElementById('f-fedex').value || '';
+
+  const sub = parseFloat(document.getElementById('d-subtotal').textContent.replace('$', ''));
+  const shipping = parseFloat(document.getElementById('d-shipping').textContent.replace('$', ''));
+  const total = parseFloat(document.getElementById('d-total').textContent.replace('$', ''));
+  const rate = document.getElementById('d-rate').textContent;
+
+  // Build PO sheet (matches the posheet structure)
+  const rows = [
+    ['GARDEN ROUTE HOME — PURCHASE ORDER'],
+    [],
+    ['Customer:', customer],
+    ['Street:', street],
+    ['City/State/ZIP:', city],
+    ['Email:', email],
+    ['Phone:', phone],
+    [],
+    ['PO #:', po],
+    ['Order date:', orderDate],
+    ['Ship date:', shipDate],
+    ['FedEx acct #:', fedex],
+    [],
+    ['ITEM NO.', 'DESCRIPTION', 'PRICE/EACH', 'QTY.', 'AMOUNT'],
+  ];
+
+  items.forEach(([code, v]) => {
+    rows.push([code, v.name, v.price, v.qty, +(v.qty * v.price).toFixed(2)]);
+  });
+
+  rows.push([]);
+  rows.push(['', '', '', 'Subtotal', +sub.toFixed(2)]);
+  rows.push(['', '', '', `Shipping (${rate})`, +shipping.toFixed(2)]);
+  rows.push(['', '', '', 'TOTAL', +total.toFixed(2)]);
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{ wch: 14 }, { wch: 38 }, { wch: 12 }, { wch: 8 }, { wch: 12 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'PurchaseOrder');
+
+  const filename = `GardenRoute_PO_${po.replace(/[^\w-]/g, '_')}.xlsx`;
+  XLSX.writeFile(wb, filename);
+
+  // Build mailto body
+  const body = [
+    `Purchase Order from ${customer}`,
+    ``,
+    `PO #: ${po}`,
+    `Order date: ${orderDate}`,
+    `Ship date: ${shipDate || '(TBD)'}`,
+    `FedEx acct: ${fedex || '(none)'}`,
+    ``,
+    `Order Ship To:`,
+    customer,
+    street,
+    city,
+    `Phone: ${phone}`,
+    `Email: ${email}`,
+    ``,
+    `--- ORDER SUMMARY ---`,
+    ...items.map(([code, v]) => `${code}  ${v.name} × ${v.qty} @ $${v.price.toFixed(2)} = $${(v.qty * v.price).toFixed(2)}`),
+    ``,
+    `Subtotal: $${sub.toFixed(2)}`,
+    `Shipping (${rate}): $${shipping.toFixed(2)}`,
+    `TOTAL: $${total.toFixed(2)}`,
+    ``,
+    `(Please attach the downloaded file: ${filename})`,
+  ].join('\n');
+
+  const subject = `Garden Route PO — ${customer} — ${po}`;
+  const mailto = `mailto:13ruan13@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  showToast('Spreadsheet downloaded. Opening email — please attach the file before sending.');
+  setTimeout(() => { window.location.href = mailto; }, 600);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4500);
+}
+
+// ============== DYNAMIC BOTTOM PADDING ==============
+// Ensures content never hides behind the fixed summary bar,
+// even as the shipping-tip line appears/disappears or layout wraps on mobile.
+function syncBottomPadding() {
+  const bar = document.querySelector('.summary-bar');
+  const container = document.querySelector('.container');
+  if (bar && container) {
+    container.style.paddingBottom = (bar.offsetHeight + 48) + 'px';
+  }
+}
+
+// ============== INIT ==============
+buildTabs();
+buildBlendSection(FW_SCENTS, 'sect-fw');
+buildBlendSection(SS_SCENTS, 'sect-ss');
+buildVaseFillers();
+buildRoseHips();
+buildRefresherOils();
+buildSummaryTab();
+
+// Refresh summary tab & persist whenever the customer/order details change
+FORM_FIELDS.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => { updateSummaryTab(); saveState(); });
+});
+
+// Restore any previously saved order for this device
+restoreState();
+
+// Warn if saving isn't reliable (private/incognito or storage disabled)
+checkStorageReliability();
+
+// Select the whole value when a quantity field gains focus, so typing replaces it
+document.addEventListener('focusin', e => {
+  if (e.target.matches('input.qty')) { e.target.select(); updateQtyPopover(); }
+});
+// Keep the selection when focus is gained via mouse click
+document.addEventListener('mouseup', e => {
+  if (e.target.matches('input.qty') && e.target.selectionStart === e.target.selectionEnd) {
+    e.target.select();
+  }
+});
+// Leave a quantity field empty rather than showing 0
+document.addEventListener('focusout', e => {
+  if (e.target.matches('input.qty')) {
+    if ((parseInt(e.target.value) || 0) === 0) e.target.value = '';
+    hideQtyPopover();
+  }
+});
+// Keep the popover aligned (or hidden) as the page scrolls
+window.addEventListener('scroll', updateQtyPopover, true);
+
+recalc();
+syncBottomPadding();
+window.addEventListener('resize', () => { syncBottomPadding(); updateQtyPopover(); });
+new ResizeObserver(syncBottomPadding).observe(document.querySelector('.summary-bar'));
+</script>
+
+</body>
+</html>

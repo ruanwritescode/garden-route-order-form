@@ -1,0 +1,772 @@
+  :root {
+    --cream: #f4ecdb;
+    --cream-light: #faf5e9;
+    --cream-dark: #ebe0c8;
+    --sage: #5b6e4a;
+    --sage-dark: #3d4d31;
+    --sage-light: #8a9b78;
+    --terracotta: #b1573a;
+    --terracotta-dark: #884028;
+    --ink: #2c2618;
+    --ink-light: #6b6451;
+    --paper: #fffdf7;
+    --border: #d4c8a8;
+    --border-soft: #e6dcc0;
+    --warning-bg: #f7e8d8;
+    --warning-text: #884028;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 15px;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(91, 110, 74, 0.04) 0%, transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(177, 87, 58, 0.04) 0%, transparent 45%);
+    background-attachment: fixed;
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 12rem;
+  }
+
+  /* ---- Header ---- */
+  .header {
+    text-align: center;
+    padding: 2rem 0 2.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .brand-logo {
+    display: block;
+    margin: 0 auto;
+    width: auto;
+    height: 150px;
+    max-width: 90%;
+  }
+  @media (max-width: 720px) {
+    .brand-logo { height: 110px; }
+  }
+  .header .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--sage-dark);
+    line-height: 1;
+  }
+  .header .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-light);
+    margin-top: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+  .header .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--terracotta);
+    margin: 1rem auto 0.75rem;
+  }
+  .header .subtitle {
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-size: 11px;
+    color: var(--sage);
+    font-weight: 500;
+  }
+
+  /* ---- Section labels ---- */
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--sage-dark);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-soft);
+    font-weight: 500;
+  }
+  .section-label em { color: var(--terracotta); font-style: italic; }
+
+  /* ---- Customer card ---- */
+  .customer-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .customer-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px; right: -1px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--sage) 0%, var(--terracotta) 100%);
+    border-radius: 4px 4px 0 0;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.25rem;
+  }
+  .form-grid .full { grid-column: 1 / -1; }
+  .form-grid label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .form-grid input {
+    width: 100%;
+    padding: 8px 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+  .form-grid input:focus {
+    outline: none;
+    border-bottom-color: var(--sage);
+  }
+  .meta-row {
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px dashed var(--border-soft);
+  }
+  @media (max-width: 720px) {
+    .form-grid, .meta-row { grid-template-columns: 1fr; }
+  }
+
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    padding: 12px 12px;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    color: var(--ink-light);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .tab:hover { color: var(--sage-dark); }
+  .tab.active {
+    color: var(--sage-dark);
+    border-bottom-color: var(--terracotta);
+  }
+
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.3s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ---- Scent blend groups (Fall/Winter, Spring/Summer) ---- */
+  .scent-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 720px) {
+    .scent-grid { grid-template-columns: 1fr; }
+  }
+
+  .scent-card {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .scent-card:focus-within, .scent-card.has-items {
+    border-color: var(--sage-light);
+    box-shadow: 0 1px 8px rgba(91, 110, 74, 0.08);
+  }
+  .scent-body {
+    display: flex;
+    align-items: center;
+  }
+  .scent-side {
+    display: block;
+    width: 40%;
+    max-width: 238px;
+    aspect-ratio: 320 / 240;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 4px;
+    /* border: 1px solid var(--border-soft); */
+  }
+  .scent-rows {
+    flex: 1;
+    min-width: 0;
+    border-left: 1px solid var(--border-soft);
+  }
+  .scent-head {
+    background: var(--cream-light);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-soft);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .scent-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    color: var(--sage-dark);
+    font-weight: 500;
+  }
+  .scent-sub {
+    font-size: 14px;
+    color: var(--sage);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .scent-sub.zero { color: var(--ink-light); opacity: 0.5; }
+
+  .product-row {
+    display: grid;
+    grid-template-columns: 1fr auto 64px;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 13px;
+  }
+  .product-row:last-child { border-bottom: none; }
+  .prow-label {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    min-width: 0;
+  }
+  .product-row .name { color: var(--ink); }
+  .product-row .code {
+    font-size: 10px;
+    color: var(--ink-light);
+    font-family: 'Inter', monospace;
+    letter-spacing: 0.05em;
+  }
+  .product-row .price {
+    color: var(--ink-light);
+    font-size: 12px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  /* .product-row .line-total {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    font-size: 12px;
+  } */
+  /* .product-row .line-total.zero { color: transparent; } */
+
+  /* ---- Inputs ---- */
+  input[type="number"].qty {
+    width: 100%;
+    padding: 5px 7px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    font-family: inherit;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  input[type="number"].qty::-webkit-outer-spin-button,
+  input[type="number"].qty::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type="number"].qty:focus {
+    outline: none;
+    border-color: var(--sage);
+    background: white;
+  }
+  input[type="number"].qty.has-value {
+    border-color: var(--sage-light);
+    background: var(--cream-light);
+    font-weight: 500;
+    color: var(--sage-dark);
+  }
+
+  /* ---- Vase fillers & Rose hips cards ---- */
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .item-card {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 14px;
+    transition: border-color 0.2s;
+  }
+  .item-card.has-items {
+    border-color: var(--sage-light);
+    background: var(--cream-light);
+  }
+  .item-card .item-img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    display: block;
+  }
+  #sect-vf .item-card .item-img { aspect-ratio: 320 / 320; }
+  #sect-rh .item-card .item-img { aspect-ratio: 450 / 640; }
+  .item-card .item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--sage-dark);
+    margin-bottom: 2px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .item-card .item-meta {
+    font-size: 11px;
+    color: var(--ink-light);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .item-card .item-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .item-card .item-price {
+    font-size: 12px;
+    color: var(--terracotta);
+    font-weight: 500;
+  }
+
+  /* ---- Refresher oils ---- */
+  .rf-warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+    border-left: 3px solid var(--terracotta);
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 1rem;
+    border-radius: 0 3px 3px 0;
+  }
+  /* Storage / incognito warning */
+  .storage-warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+    border-left: 3px solid var(--terracotta);
+    padding: 10px 14px;
+    font-size: 13px;
+    margin: 4px 0 1rem;
+    border-radius: 0 3px 3px 0;
+  }
+  /* Save / restore bar */
+  .save-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 4px 0 1rem;
+    font-size: 13px;
+    color: var(--ink-light);
+  }
+  .save-bar .link-btn {
+    background: none;
+    border: none;
+    color: var(--terracotta);
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    white-space: nowrap;
+  }
+  .save-bar .link-btn:hover { color: var(--terracotta-dark); }
+  /* Informational quantity note (not an error) */
+  .qty-note {
+    font-size: 13px;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .rf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+  }
+  .rf-row {
+    display: grid;
+    grid-template-columns: 1fr 50px 60px;
+    align-items: center;
+    gap: 8px;
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .rf-row.has-items {
+    border-color: var(--sage-light);
+    background: var(--cream-light);
+  }
+  .rf-name { color: var(--ink); }
+  .rf-code { font-size: 10px; color: var(--ink-light); letter-spacing: 0.05em; }
+  .rf-price { font-size: 12px; color: var(--ink-light); text-align: right; }
+
+  /* ---- Summary bar ---- */
+  .summary-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--paper);
+    border-top: 2px solid var(--sage-dark);
+    box-shadow: 0 -2px 20px rgba(44, 38, 24, 0.08);
+    padding: 1rem 1.5rem;
+    z-index: 100;
+  }
+  .summary-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 1.5rem;
+    align-items: top;
+  }
+  .sum-block {
+    text-align: center;
+  }
+  .sum-block .label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .sum-block .value {
+    font-family: 'Inter', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .sum-block .rate {
+    font-size: 14px;
+    color: var(--terracotta);
+    margin-top: 2px;
+  }
+  .sum-block .value.total { color: var(--sage-dark); }
+
+  .place-btn {
+    background: var(--sage-dark);
+    color: var(--paper);
+    border: none;
+    padding: 12px 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .place-btn:hover {
+    background: var(--terracotta);
+  }
+  .place-btn:disabled {
+    background: var(--ink-light);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* ---- Per-tab summary card (shown at top of each tab) ---- */
+  .tab-summary {
+    border: 6px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .tab-summary-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2px;
+    background: var(--border-soft);
+  }
+  .ts-cell {
+    background: var(--paper);
+    text-align: center;
+    padding: 12px 14px;
+    white-space: nowrap;
+  }
+  .ts-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .ts-value {
+    font-family: 'Inter', serif;
+    font-size: 22px;
+    color: var(--sage-dark);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .ts-cell.total .ts-value { color: var(--ink); }
+
+  /* ---- Vase filler / Rose hip subtotal inside card ---- */
+  .item-card .item-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    color: var(--terracotta);
+    text-align: right;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-soft);
+    font-variant-numeric: tabular-nums;
+    display: none;
+  }
+  .item-card.has-items .item-sub { display: block; }
+
+  /* ---- Invalid input styling + validation warning ---- */
+  input.qty.invalid {
+    border-color: var(--terracotta) !important;
+    background: #fbeae0 !important;
+    color: var(--terracotta-dark) !important;
+  }
+  .validation-warning {
+    background: var(--warning-bg);
+    border-left: 3px solid var(--terracotta);
+    color: var(--warning-text);
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 0 3px 3px 0;
+    max-width: 1080px;
+    margin: 0 auto 10px;
+  }
+  .validation-warning strong { display: block; margin-bottom: 2px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .validation-warning ul { margin: 0; padding-left: 18px; }
+  .validation-warning li { margin: 1px 0; }
+
+  /* ---- Summary tab content ---- */
+  .summary-tab {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem;
+  }
+  .summary-tab h3 {
+    font-family: 'Inter', serif;
+    font-size: 22px;
+    color: var(--sage-dark);
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border-soft);
+    font-weight: 500;
+  }
+  .summary-tab h3:first-child { margin-top: 0; }
+  .summary-tab .customer-recap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 2rem;
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+  }
+  .summary-tab .recap-row span:first-child {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--sage);
+    font-weight: 600;
+    display: inline-block;
+    width: 95px;
+  }
+  .summary-tab .line-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.5rem;
+    font-size: 13px;
+    table-layout: fixed;
+  }
+  .summary-tab .line-table col.c-num { width: 84px; }
+  .summary-tab .line-table td > div:first-child { overflow-wrap: anywhere; }
+  .summary-tab .line-table th {
+    text-align: left;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--sage);
+    font-weight: 600;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-tab .line-table th.num { text-align: right; }
+  .summary-tab .line-table td {
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--border-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .summary-tab .line-table td.num { text-align: right; }
+  .summary-tab .line-table td.code { font-size: 11px; color: var(--ink-light); }
+  .summary-tab .line-table tr.cat-sub td {
+    background: var(--cream-light);
+    font-weight: 500;
+    color: var(--sage-dark);
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-tab .totals-block {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 24px;
+    max-width: 320px;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .summary-tab .totals-block .total-label { color: var(--ink-light); }
+  .summary-tab .totals-block .total-value { text-align: right; }
+  .summary-tab .totals-block .grand .total-label,
+  .summary-tab .totals-block .grand .total-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--sage-dark);
+    border-top: 1px solid var(--border);
+    padding-top: 6px;
+    margin-top: 4px;
+  }
+  .summary-tab .ship-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 0.5rem;
+  }
+  .summary-tab .ship-table th, .summary-tab .ship-table td {
+    padding: 6px 10px;
+    border: 1px solid var(--border-soft);
+    text-align: left;
+  }
+  .summary-tab .ship-table th {
+    background: var(--cream-light);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--sage-dark);
+    font-weight: 600;
+  }
+  .summary-tab .ship-table tr.current td {
+    background: var(--cream-light);
+    color: var(--terracotta);
+    font-weight: 500;
+  }
+  .summary-tab .empty-note {
+    color: var(--ink-light);
+    font-style: italic;
+    padding: 0.5rem 0;
+    font-size: 13px;
+  }
+
+  /* ---- Shipping tip moved to top of summary bar, larger ---- */
+  .shipping-tip-top {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--terracotta);
+    padding: 0 0 10px;
+    max-width: 1080px;
+    margin: 0 auto 8px;
+    border-bottom: 1px dashed var(--border-soft);
+    display: none;
+  }
+  .shipping-tip-top.qualified { color: var(--sage); }
+  .shipping-tip-top:not(:empty) { display: block; }
+
+  @media (max-width: 720px) {
+    .summary-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .place-btn { grid-column: 1 / -1; }
+  }
+
+  /* ---- Toast ---- */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--sage-dark);
+    color: var(--paper);
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    transition: transform 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ---- Quantity error popover ---- */
+  .qty-popover {
+    position: fixed;
+    z-index: 1200;
+    display: none;
+    background: var(--terracotta);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: 500;
+    padding: 7px 11px;
+    border-radius: 5px;
+    max-width: 230px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+    pointer-events: none;
+  }
+  .qty-popover::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--terracotta);
+  }
+  .qty-popover.below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--terracotta);
+  }
