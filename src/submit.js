@@ -1,7 +1,9 @@
-// Order submission: builds an .xlsx PO and opens a prefilled email.
+// Order submission: builds an .xlsx PO and triggers a download.
 import * as XLSX from 'xlsx';
 import { qty } from './state.js';
 import { validate } from './validate.js';
+
+const ORDER_EMAIL = 'info@gardenroutehome.com';
 
 export function showToast(msg) {
   const t = document.getElementById('toast');
@@ -68,34 +70,5 @@ export function submitOrder() {
   const filename = `GardenRoute_PO_${po.replace(/[^\w-]/g, '_')}.xlsx`;
   XLSX.writeFile(wb, filename);
 
-  const body = [
-    `Purchase Order from ${customer}`,
-    ``,
-    `PO #: ${po}`,
-    `Order date: ${orderDate}`,
-    `Ship date: ${shipDate || '(TBD)'}`,
-    `FedEx acct: ${fedex || '(none)'}`,
-    ``,
-    `Order Ship To:`,
-    customer,
-    street,
-    cityStateZip,
-    `Phone: ${phone}`,
-    `Email: ${email}`,
-    ``,
-    `--- ORDER SUMMARY ---`,
-    ...items.map(([code, v]) => `${code}  ${v.name} × ${v.qty} @ $${v.price.toFixed(2)} = $${(v.qty * v.price).toFixed(2)}`),
-    ``,
-    `Subtotal: $${sub.toFixed(2)}`,
-    `Shipping (${rate}): $${shipping.toFixed(2)}`,
-    `TOTAL: $${total.toFixed(2)}`,
-    ``,
-    `(Please attach the downloaded file: ${filename})`,
-  ].join('\n');
-
-  const subject = `Garden Route PO — ${customer} — ${po}`;
-  const mailto = `mailto:13ruan13@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-  showToast('Spreadsheet downloaded. Opening email — please attach the file before sending.');
-  setTimeout(() => { window.location.href = mailto; }, 600);
+  showToast(`Purchase order downloaded! Email ${filename} to ${ORDER_EMAIL}`);
 }
