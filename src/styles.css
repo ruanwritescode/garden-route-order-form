@@ -295,7 +295,7 @@
     min-width: 0;
   }
   /* Stack name over code on small screens so the code can't overlap the price */
-  @media (max-width: 720px) {
+  @media (max-width: 900px) {
     .prow-label {
       flex-direction: column;
       align-items: flex-start;
