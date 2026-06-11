@@ -16,7 +16,7 @@ export const SS_SCENTS = [
 export const BLEND_VARIANTS = [
   { prefix: 'BB',  desc: 'Large',   price: 15, step: 12 },
   { prefix: 'BBS', desc: 'Small',   price: 12, step: 12 },
-  { prefix: 'FO',  desc: 'Oil', price: 6.75,  step: 6  },
+  { prefix: 'FO',  desc: 'Oil', price: 7.25,  step: 6  },
   { prefix: 'BBD', desc: 'Display',   price: 12, step: 1  },
 ];
 export const VF_ITEMS = [
