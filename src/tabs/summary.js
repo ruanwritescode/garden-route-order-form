@@ -12,7 +12,7 @@ export function buildSummaryTab() {
       <h3>Order Details</h3>
       <div class="customer-recap" id="recap-order"></div>
 
-      <h3>Line Items</h3>
+      <h3>Items</h3>
       <div id="recap-items"></div>
 
       <h3>Shipping Tiers</h3>
@@ -107,10 +107,21 @@ export function updateSummaryTab() {
   const ship = parseFloat(document.getElementById('d-shipping').textContent.replace('$', ''));
   const total = parseFloat(document.getElementById('d-total').textContent.replace('$', ''));
   const rate = document.getElementById('d-rate').textContent;
+
+  let tipHtml = '';
+  if (sub >= 3000) {
+    tipHtml = `<div class="sm-ship-tip qualified" style="grid-column:1/-1">You Are Eligible for Free Shipping</div>`;
+  } else if (sub > 0) {
+    const next = sub < 500 ? 500 : sub < 2000 ? 2000 : 3000;
+    const nextRate = sub < 500 ? '12% shipping' : sub < 2000 ? '10% shipping' : 'free shipping';
+    tipHtml = `<div class="sm-ship-tip" style="grid-column:1/-1">Add $${(next - sub).toFixed(2)} more for ${nextRate} rate</div>`;
+  }
+
   document.getElementById('recap-totals').innerHTML = `
     <div class="total-label">Subtotal</div><div class="total-value">$${sub.toFixed(2)}</div>
     <div class="total-label">Shipping (${rate.replace('Rate: ', '')})</div><div class="total-value">$${ship.toFixed(2)}</div>
     <div class="grand total-label">Order Total</div><div class="grand total-value">$${total.toFixed(2)}</div>
+    ${tipHtml}
   `;
 
   // Highlight current shipping tier

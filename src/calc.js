@@ -89,6 +89,8 @@ export function recalc() {
   document.getElementById('d-shipping').textContent = '$' + shipping.toFixed(2);
   document.getElementById('d-rate').textContent = 'Rate: ' + (rate === 0 ? 'Free' : (rate * 100).toFixed(0) + '%');
   document.getElementById('d-total').textContent = '$' + total.toFixed(2);
+  const sfTotal = document.getElementById('sf-total');
+  if (sfTotal) sfTotal.textContent = '$' + total.toFixed(2);
 
   // Shipping tip at top of summary bar
   const tip = document.getElementById('ship-tip');
@@ -112,14 +114,14 @@ export function recalc() {
   renderValidation(v);
   updateQtyPopover();
 
-  document.getElementById('place-btn').disabled = (sub === 0) || (v.issues.length > 0) || (v.invalidCount > 0);
+  document.getElementById('place-btn').disabled = (sub === 0);
 }
 
-// Keep page content clear of the fixed summary bar.
+// Keep page content clear of whichever fixed bar is currently visible.
 export function syncBottomPadding() {
-  const bar = document.querySelector('.summary-bar');
   const container = document.querySelector('.container');
-  if (bar && container) {
-    container.style.paddingBottom = (bar.offsetHeight + 48) + 'px';
-  }
+  if (!container) return;
+  const isSummary = document.body.classList.contains('summary-tab-active');
+  const bar = document.querySelector(isSummary ? '.summary-footer' : '.summary-bar');
+  container.style.paddingBottom = ((bar ? bar.offsetHeight : 0) + 48) + 'px';
 }

@@ -80,15 +80,30 @@
       <div class="label">Order Total</div>
       <div class="value total" id="d-total">$0.00</div>
     </div>
-    <button class="place-btn" id="place-btn" onclick="submitOrder()">
-      <span>Submit Order</span>
-      <svg width="22" height="14" viewBox="0 0 22 14" fill="currentColor" aria-hidden="true" style="vertical-align: -1px; margin-left: 4px;">
-        <ellipse cx="4" cy="4" rx="3" ry="1.4" transform="rotate(-30 4 4)"/>
-        <ellipse cx="9" cy="9" rx="3" ry="1.4" transform="rotate(30 9 9)"/>
-        <ellipse cx="14" cy="4" rx="3" ry="1.4" transform="rotate(-30 14 4)"/>
-        <circle cx="19" cy="7" r="1.6"/>
+    <button class="place-btn" id="place-btn" onclick="goToSummary()">
+      <span>Review Order</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: -2px; margin-left: 6px;">
+        <path d="M5 12h14M13 6l6 6-6 6"/>
       </svg>
     </button>
+  </div>
+</div>
+
+<div class="summary-footer">
+  <div class="summary-footer-inner">
+    <div class="sf-block">
+      <div class="sf-label">Order Total</div>
+      <div class="sf-value" id="sf-total">$0.00</div>
+    </div>
+    <div class="sf-cta">
+      <button class="create-po-btn" onclick="submitOrder()">
+        Create Purchase Order
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align: -2px; margin-left: 6px;">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </button>
+      <p class="sf-email-note">Email PO to <a href="mailto:info@gardenroutehome.com">info@gardenroutehome.com</a></p>
+    </div>
   </div>
 </div>
 
