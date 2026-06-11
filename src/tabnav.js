@@ -18,6 +18,8 @@ export function switchTab(id, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('sect-' + id).classList.add('active');
   btn.classList.add('active');
+  document.body.classList.toggle('summary-tab-active', id === 'sm');
+  window.dispatchEvent(new Event('resize'));
   saveState();
 }
 

@@ -2,7 +2,7 @@
 import './styles.css';
 
 import { FW_SCENTS, SS_SCENTS } from './data.js';
-import { buildTabs } from './tabnav.js';
+import { buildTabs, activateTab } from './tabnav.js';
 import { buildBlendSection } from './tabs/blends.js';
 import { buildVaseFillers } from './tabs/vaseFillers.js';
 import { buildRoseHips } from './tabs/roseHips.js';
@@ -14,10 +14,17 @@ import { updateQtyPopover, hideQtyPopover } from './validate.js';
 import { onQtyChange, toggleCard, updateItemSub, updateBlendSub } from './quantity.js';
 import { submitOrder } from './submit.js';
 
+function goToSummary() {
+  activateTab('sm');
+  updateSummaryTab();
+  const sect = document.getElementById('sect-sm');
+  if (sect) window.scrollTo({ top: sect.getBoundingClientRect().top + window.scrollY - 20, behavior: 'smooth' });
+}
+
 // Expose functions referenced by inline handlers in the generated/markup HTML.
 Object.assign(window, {
   onQtyChange, toggleCard, updateItemSub, updateBlendSub,
-  submitOrder, clearSavedState,
+  submitOrder, clearSavedState, goToSummary,
 });
 
 async function init() {
@@ -80,6 +87,7 @@ async function init() {
   syncBottomPadding();
   window.addEventListener('resize', () => { syncBottomPadding(); updateQtyPopover(); });
   new ResizeObserver(syncBottomPadding).observe(document.querySelector('.summary-bar'));
+  new ResizeObserver(syncBottomPadding).observe(document.querySelector('.summary-footer'));
 }
 
 init();
