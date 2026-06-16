@@ -1,6 +1,6 @@
 // Summary tab: customer/order recap, grouped line items, shipping tiers, totals.
 import { qty } from '../state.js';
-import { RF_ITEMS } from '../data.js';
+import { RF_ITEMS, FW_SCENTS, SS_SCENTS, BLEND_VARIANTS } from '../data.js';
 
 export function buildSummaryTab() {
   const sect = document.getElementById('sect-sm');
@@ -53,10 +53,15 @@ export function updateSummaryTab() {
     <div class="recap-row"><span>Resale Cert</span> ${get('f-resalecertificate')}</div>
   `;
 
-  // Group line items by category
+  // Group line items by category. For blends we group further by scent code
+  const scentNameFor = code => {
+    const f = FW_SCENTS.concat(SS_SCENTS).find(([c, n]) => c === code);
+    return f ? f[1] : code;
+  };
+
   const groups = {
-    'Fall / Winter Blends': { rows: [], pred: c => c.match(/^(BB|BBS|FO|BBD)\/(AW|BO|CA|HS|MK|MC|NP|PO|WP|IS|PS)$/) },
-    'Spring / Summer Blends': { rows: [], pred: c => c.match(/^(BB|BBS|FO|BBD)\/(CB|IP|LF|LS|LR|MI|OS|SB|WF|VG|LB)$/) },
+    'Fall / Winter Blends': { byScent: {}, pred: c => c.match(/^(BB|BBS|FO|BBD)\/[A-Z]{2}$/) },
+    'Spring / Summer Blends': { byScent: {}, pred: c => c.match(/^(BB|BBS|FO|BBD)\/[A-Z]{2}$/) },
     'Vase Fillers': { rows: [], pred: c => c.startsWith('VF/') },
     'Rose Hips': { rows: [], pred: c => c.startsWith('RH/') },
     'Refresher Oils (standalone)': { rows: [], pred: c => RF_ITEMS.some(r => r[0] === c) },
@@ -64,15 +69,25 @@ export function updateSummaryTab() {
 
   Object.entries(qty).forEach(([code, v]) => {
     if (v.qty <= 0) return;
+    // blends
+    if (code.match(/^(BB|BBS|FO|BBD)\/[A-Z]{2}$/)) {
+      const m = code.match(/^([^/]+)\/(.+)$/) || [];
+      const prefix = m[1];
+      const scent = m[2];
+      const cat = FW_SCENTS.some(([c]) => c === scent) ? 'Fall / Winter Blends' : 'Spring / Summer Blends';
+      const g = groups[cat];
+      g.byScent[scent] = g.byScent[scent] || { name: scentNameFor(scent), rows: [] };
+      const variant = BLEND_VARIANTS.find(b => b.prefix === prefix);
+      const label = variant ? variant.desc : prefix;
+      g.byScent[scent].rows.push([code, label, v.qty, v.price, v.qty * v.price]);
+      return;
+    }
     for (const [, g] of Object.entries(groups)) {
       if (g.pred(code)) { g.rows.push([code, v.name, v.qty, v.price, v.qty * v.price]); return; }
     }
   });
 
-  const itemsHtml = Object.entries(groups).map(([cat, g]) => {
-    if (g.rows.length === 0) return '';
-    const catSub = g.rows.reduce((s, r) => s + r[4], 0);
-    return `
+  const renderTable = (title, headerRows, rowsHtml, subtotal) => `
       <table class="line-table">
         <colgroup>
           <col>
@@ -81,22 +96,47 @@ export function updateSummaryTab() {
           <col class="c-num">
         </colgroup>
         <thead><tr>
-          <th>${cat}</th>
+          <th>${title}</th>
           <th class="num">Qty</th>
           <th class="num">Price</th>
           <th class="num">Amount</th>
         </tr></thead>
         <tbody>
-          ${g.rows.map(r => `<tr>
+          ${headerRows.join('')}
+          ${rowsHtml}
+          <tr class="cat-sub"><td colspan="3">Subtotal · ${title}</td><td class="num">$${subtotal.toFixed(2)}</td></tr>
+        </tbody>
+      </table>
+    `;
+
+  const itemsHtml = Object.entries(groups).map(([cat, g]) => {
+    // blends: byScent
+    if (g.byScent) {
+      const scentEntries = Object.entries(g.byScent);
+      if (scentEntries.length === 0) return '';
+      const catSub = scentEntries.reduce((s, [, sdata]) => s + sdata.rows.reduce((ss, r) => ss + r[4], 0), 0);
+      const rowsHtml = scentEntries.map(([scent, sdata]) => {
+        const scentHeader = `<tr class="scent-header"><td colspan="4"><strong>${sdata.name}</strong></td></tr>`;
+        const rows = sdata.rows.map(r => `<tr>
             <td><div>${r[1]}</div><div class="code">${r[0]}</div></td>
             <td class="num">${r[2]}</td>
             <td class="num">$${r[3].toFixed(2)}</td>
             <td class="num">$${r[4].toFixed(2)}</td>
-          </tr>`).join('')}
-          <tr class="cat-sub"><td colspan="3">Subtotal · ${cat}</td><td class="num">$${catSub.toFixed(2)}</td></tr>
-        </tbody>
-      </table>
-    `;
+          </tr>`).join('');
+        return scentHeader + rows;
+      }).join('');
+      return renderTable(cat, [], rowsHtml, catSub);
+    }
+    // non-blend groups
+    if (!g.rows || g.rows.length === 0) return '';
+    const catSub = g.rows.reduce((s, r) => s + r[4], 0);
+    const rowsHtml = g.rows.map(r => `<tr>
+            <td><div>${r[1]}</div><div class="code">${r[0]}</div></td>
+            <td class="num">${r[2]}</td>
+            <td class="num">$${r[3].toFixed(2)}</td>
+            <td class="num">$${r[4].toFixed(2)}</td>
+          </tr>`).join('');
+    return renderTable(cat, [], rowsHtml, catSub);
   }).join('');
 
   const itemsEl = document.getElementById('recap-items');
