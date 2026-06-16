@@ -165,7 +165,7 @@ export function updateSummaryTab() {
 
   document.getElementById('recap-totals').innerHTML = `
     <div class="total-label">Subtotal</div><div class="total-value">$${sub.toFixed(2)}</div>
-    <div class="total-label">Shipping (${rate.replace('Rate: ', '')})</div><div class="total-value">$${ship.toFixed(2)}</div>
+    <div class="total-label">Shipping</div><div class="total-value">$${ship.toFixed(2)}</div>
     <div class="grand total-label">Order Total</div><div class="grand total-value">$${total.toFixed(2)}</div>
     ${tipHtml}
   `;
