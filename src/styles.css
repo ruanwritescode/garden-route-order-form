@@ -691,6 +691,11 @@
     font-size: 13px;
     table-layout: fixed;
   }
+
+  /* Small gap between category tables on the summary page */
+  .summary-tab #recap-items .line-table + .line-table {
+    margin-top: 2rem;
+  }
   .summary-tab .line-table col.c-num { width: 84px; }
   .summary-tab .line-table td > div:first-child { overflow-wrap: anywhere; }
   .summary-tab .line-table th {
