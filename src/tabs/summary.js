@@ -118,7 +118,7 @@ export function updateSummaryTab() {
       const rowsHtml = scentEntries.map(([scent, sdata]) => {
         const scentHeader = `<tr class="scent-header"><td colspan="4"><strong>${sdata.name}</strong></td></tr>`;
         const rows = sdata.rows.map(r => `<tr>
-            <td><div>${r[1]}</div><div class="code">${r[0]}</div></td>
+            <td><div class="code-name">${r[0]} - ${r[1]}</div></td>
             <td class="num">${r[2]}</td>
             <td class="num">$${r[3].toFixed(2)}</td>
             <td class="num">$${r[4].toFixed(2)}</td>
@@ -131,7 +131,7 @@ export function updateSummaryTab() {
     if (!g.rows || g.rows.length === 0) return '';
     const catSub = g.rows.reduce((s, r) => s + r[4], 0);
     const rowsHtml = g.rows.map(r => `<tr>
-            <td><div>${r[1]}</div><div class="code">${r[0]}</div></td>
+            <td><div class="code-name">${r[0]} - ${r[1]}</div></td>
             <td class="num">${r[2]}</td>
             <td class="num">$${r[3].toFixed(2)}</td>
             <td class="num">$${r[4].toFixed(2)}</td>

@@ -694,14 +694,15 @@
   .summary-tab .line-table col.c-num { width: 84px; }
   .summary-tab .line-table td > div:first-child { overflow-wrap: anywhere; }
   .summary-tab .line-table th {
+    /* swapped: use the smaller green label style (was previously .scent-header) */
     text-align: left;
-    font-size: 9px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--sage);
+    letter-spacing: 0.12em;
+    color: var(--ink);
     font-weight: 600;
     padding: 6px 8px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-soft);
   }
   .summary-tab .line-table th.num { text-align: right; }
   .summary-tab .line-table td {
@@ -711,6 +712,28 @@
   }
   .summary-tab .line-table td.num { text-align: right; }
   .summary-tab .line-table td.code { font-size: 11px; color: var(--ink-light); }
+  .summary-tab .line-table .code-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  /* tighten vertical spacing for compact summary rows */
+  .summary-tab .line-table td { padding: 4px 8px; }
+  /* Scent header rows: swapped to use the original table-header appearance */
+  .summary-tab .line-table tr.scent-header td {
+    text-align: left;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--sage);
+    font-weight: 600;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+  }
   .summary-tab .line-table tr.cat-sub td {
     background: var(--cream-light);
     font-weight: 500;
