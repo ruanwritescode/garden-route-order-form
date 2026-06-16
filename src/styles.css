@@ -476,14 +476,14 @@
   .summary-bar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    background: var(--sage-dark);
-    border-top: none;
-    box-shadow: 0 -4px 24px rgba(0,0,0,0.3);
+    background: var(--cream-light);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
     padding: 1rem 1.5rem;
     z-index: 100;
   }
   .summary-inner {
-    max-width: 1080px;
+    max-width: 981px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr auto;
@@ -497,7 +497,7 @@
     font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.5);
+    color: var(--ink-light);
     font-weight: 600;
     margin-bottom: 2px;
   }
@@ -505,24 +505,24 @@
     font-family: 'Inter', serif;
     font-size: 24px;
     font-weight: 500;
-    color: var(--cream-light);
+    color: var(--ink);
     font-variant-numeric: tabular-nums;
     line-height: 1;
   }
   .sum-block .rate {
     font-size: 14px;
-    color: rgba(255,255,255,0.45);
+    color: var(--terracotta);
     margin-top: 2px;
   }
-  .sum-block .value.total { color: var(--cream-light); }
+  .sum-block .value.total { color: var(--ink); }
 
   @media (max-width: 720px) {
     .summary-bar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    background: var(--sage-dark);
-    border-top: none;
-    box-shadow: 0 -4px 24px rgba(0,0,0,0.3);
+    background: var(--cream-light);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
     padding: 1rem .75rem;
     z-index: 100;
   }
@@ -536,7 +536,7 @@
     font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.5);
+    color: var(--ink-light);
     font-weight: 600;
     margin-bottom: 2px;
   }
@@ -544,16 +544,16 @@
     font-family: 'Inter', serif;
     font-size: 18px;
     font-weight: 500;
-    color: var(--cream-light);
+    color: var(--ink);
     font-variant-numeric: tabular-nums;
     line-height: 1;
   }
   .sum-block .rate {
     font-size: 14px;
-    color: rgba(255,255,255,0.45);
+    color: var(--terracotta);
     margin-top: 2px;
   }
-  .sum-block .value.total { color: var(--cream-light); }
+  .sum-block .value.total { color: var(--ink); }
   }
 
   .place-btn {
@@ -574,8 +574,8 @@
     background: var(--terracotta-dark);
   }
   .place-btn:disabled {
-    background: rgba(255,255,255,0.12);
-    color: rgba(255,255,255,0.35);
+    background: var(--border-soft);
+    color: var(--ink-light);
     cursor: not-allowed;
     opacity: 1;
   }
@@ -795,46 +795,22 @@
     z-index: 100;
   }
   .summary-tab-active .summary-footer { display: block; }
-  .summary-footer-inner {
-    max-width: 981px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1.5rem;
-  }
-  .sf-block .sf-label {
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.5);
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
-  .sf-block .sf-value {
-    font-family: 'Inter', sans-serif;
-    font-size: 28px;
-    font-weight: 500;
-    color: var(--cream-light);
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
-  }
-  .sf-cta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-  }
   .sf-email-note {
+    max-width: 981px;
     font-size: 11px;
-    color: rgba(255,255,255,0.45);
+    color: var(--ink-light);
+    text-align: right;
+    margin: 6px auto 0;
   }
   .sf-email-note a { color: var(--terracotta); text-decoration: none; }
   .sf-email-note a:hover { text-decoration: underline; }
   @media (max-width: 720px) {
     .summary-footer { padding: 0.75rem; }
-    .summary-footer-inner { gap: 0.75rem; }
-    .sf-block .sf-value { font-size: 22px; }
+    .summary-footer .summary-inner {
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+    }
+    .summary-footer .summary-inner > div:empty { display: none; }
     .create-po-btn { padding: 11px 20px; font-size: 16px; }
   }
 
@@ -860,14 +836,14 @@
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 22px;
-    color: rgba(255,255,255,0.65);
+    color: var(--terracotta);
     padding: 0 0 10px;
     max-width: 1080px;
     margin: 0 auto 8px;
-    border-bottom: 1px dashed rgba(255,255,255,0.15);
+    border-bottom: 1px dashed var(--border-soft);
     display: none;
   }
-  .shipping-tip-top.qualified { color: rgba(255,255,255,0.8); }
+  .shipping-tip-top.qualified { color: var(--sage); }
   .shipping-tip-top:not(:empty) { display: block; }
 
   @media (max-width: 720px) {
