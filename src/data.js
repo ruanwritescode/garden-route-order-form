@@ -2,16 +2,32 @@
 // Pure data — no DOM, no side effects.
 
 export const FW_SCENTS = [
-  ['AW', 'Aspen Woods'], ['BO', "Bag O' Boo!"], ['CA', 'Cottage Apple'],
-  ['HS', 'Holiday Spruce'], ['MK', 'Mistletoe Kiss'], ['MC', 'Mulled Cider'],
-  ['NP', 'Nutmeg Pear'], ['PO', 'Pomander'], ['WP', 'Winter Pine'],
-  ['IS', 'Indian Summer'], ['PS', 'Pumpkin Spice'],
+  ['AW', 'Aspen Woods'],
+  ['BO', "Bag O' Boo!"],
+  ['CA', 'Cottage Apple'],
+  ['HS', 'Holiday Spruce'],
+  ['MK', 'Mistletoe Kiss'],
+  ['MC', 'Mulled Cider'],
+  ['NP', 'Nutmeg Pear'],
+  ['PO', 'Pomander'],
+  ['WP', 'Winter Pine'],
+  ['IS', 'Indian Summer'],
+  ['PS', 'Pumpkin Spice'],
+  ['IP', 'Island Proteas'],
+  ['PT', 'Pear Tree'],
 ];
 export const SS_SCENTS = [
-  ['CB', 'Clementine Bergamot'], ['IP', 'Island Proteas'], ['LF', 'Lavender Fields'],
-  ['LS', 'Lakeside'], ['LR', 'Lovely Rose'], ['MI', 'Magnolia & Ivy'],
-  ['OS', 'Ocean Spa'], ['SB', 'Sanibel'], ['WF', 'Wildflowers'],
-  ['VG', 'Vintage Garden'], ['LB', 'Lemon Blossom'],
+  ['CB', 'Clementine Bergamot'],
+  ['IP', 'Island Proteas'],
+  ['LF', 'Lavender Fields'],
+  ['LS', 'Lakeside'],
+  ['LR', 'Lovely Rose'],
+  ['MI', 'Magnolia & Ivy'],
+  ['OS', 'Ocean Spa'],
+  ['SB', 'Sanibel'],
+  ['WF', 'Wildflowers'],
+  ['VG', 'Vintage Garden'],
+  ['LB', 'Lemon Blossom'],
 ];
 export const BLEND_VARIANTS = [
   { prefix: 'BB',  desc: 'Large',   price: 15, step: 12 },
