@@ -81,15 +81,21 @@ export function updateQtyPopover() {
 }
 
 export function renderValidation(v) {
-  const box = document.getElementById('validation-warning');
-  if (v.issues.length === 0) {
-    box.style.display = 'none';
-    box.innerHTML = '';
-  } else {
-    box.style.display = 'block';
-    box.innerHTML = '<strong>Please fix:</strong><ul>' +
-      v.issues.map(i => `<li>${i}</li>`).join('') + '</ul>';
-  }
+  const boxes = [
+    document.getElementById('validation-warning'),
+    document.getElementById('sf-validation-warning'),
+  ];
+  boxes.forEach(box => {
+    if (!box) return;
+    if (v.issues.length === 0) {
+      box.style.display = 'none';
+      box.innerHTML = '';
+    } else {
+      box.style.display = 'block';
+      box.innerHTML = '<strong>Please fix:</strong><ul>' +
+        v.issues.map(i => `<li>${i}</li>`).join('') + '</ul>';
+    }
+  });
   // Update refresher-oil tab note text to reflect current rule
   const note = document.getElementById('rf-rule-note');
   if (note) {
