@@ -15,18 +15,24 @@ export function buildSummaryTab() {
       <h3>Items</h3>
       <div id="recap-items"></div>
 
-      <h3>Shipping Tiers</h3>
-      <table class="ship-table" id="recap-ship-tiers">
-        <thead><tr><th>Order Subtotal</th><th>Shipping Rate</th></tr></thead>
-        <tbody>
-          <tr data-tier="0"><td>Under $500</td><td>15%</td></tr>
-          <tr data-tier="500"><td>$500 – $1,999.99</td><td>12%</td></tr>
-          <tr data-tier="2000"><td>$2,000 – $2,999.99</td><td>10%</td></tr>
-          <tr data-tier="3000"><td>$3,000 and up</td><td>Free</td></tr>
-        </tbody>
-      </table>
-
-      <div class="totals-block" id="recap-totals"></div>
+      <div class="ship-totals">
+        <div class="ship-left">
+          <h3>Shipping Tiers</h3>
+          <table class="ship-table" id="recap-ship-tiers">
+            <thead><tr><th>Order Subtotal</th><th>Shipping Rate</th></tr></thead>
+            <tbody>
+              <tr data-tier="0"><td>Under $500</td><td>15%</td></tr>
+              <tr data-tier="500"><td>$500 – $1,999.99</td><td>12%</td></tr>
+              <tr data-tier="2000"><td>$2,000 – $2,999.99</td><td>10%</td></tr>
+              <tr data-tier="3000"><td>$3,000 and up</td><td>Free</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ship-right">
+          <div class="totals-header" id="recap-totals-header">Order Totals</div>
+          <div class="totals-block" id="recap-totals"></div>
+        </div>
+      </div>
     </div>
   `;
 }

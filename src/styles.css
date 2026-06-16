@@ -750,9 +750,35 @@
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 6px 24px;
-    max-width: 320px;
+    max-width: none; /* fill available width */
+    width: 100%;
     margin-left: auto;
     font-variant-numeric: tabular-nums;
+  }
+  .summary-tab .ship-totals {
+    display: grid;
+    grid-template-columns: 1fr minmax(220px, 40%); /* right column flexible */
+    gap: 1rem 2rem; /* increased column gap */
+    align-items: start; /* top-align so headers line up */
+    margin-top: 2rem; /* separate from line items above */
+  }
+  .summary-tab .ship-totals .ship-left { min-width: 0; }
+  .summary-tab .ship-totals .ship-right { display: block; }
+  .summary-tab .ship-totals .ship-right { display: flex; flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  .summary-tab .ship-totals .ship-right .totals-block { align-self: flex-end; }
+
+  .summary-tab .totals-header {
+    font-family: 'Inter', serif;
+    font-size: 22px;
+    color: var(--sage-dark);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border-soft);
+    font-weight: 500;
+  }
+  @media (max-width: 720px) {
+    .summary-tab .ship-totals { grid-template-columns: 1fr; }
+    .summary-tab .totals-block { max-width: none; margin-left: 0; }
   }
   .summary-tab .totals-block .total-label { color: var(--ink-light); }
   .summary-tab .totals-block .total-value { text-align: right; }
