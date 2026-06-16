@@ -1,5 +1,5 @@
 // Vase Fillers tab.
-import { VF_ITEMS, ITEM_IMG, METRIC_LABELS, imgSrc } from '../data.js';
+import { VF_ITEMS, METRIC_LABELS, imgSrc, itemImagePath } from '../data.js';
 import { makeTabSummary } from '../widgets.js';
 
 export function buildVaseFillers() {
@@ -18,7 +18,7 @@ export function buildVaseFillers() {
     card.className = 'item-card';
     card.id = cardId;
     card.innerHTML = `
-      ${ITEM_IMG[code] ? `<img class="item-img" src="${imgSrc(ITEM_IMG[code])}" alt="${name}" loading="lazy">` : ''}
+      <img class="item-img" src="${imgSrc(itemImagePath(code))}" alt="${name}" loading="lazy" onerror="this.remove()">
       <div class="item-name">${name}</div>
       <div class="item-meta">${meta}</div>
       <div class="item-foot">

@@ -1,5 +1,5 @@
 // Rose Hips tab.
-import { RH_ITEMS, ITEM_IMG, METRIC_LABELS, imgSrc } from '../data.js';
+import { RH_ITEMS, METRIC_LABELS, imgSrc, itemImagePath } from '../data.js';
 import { makeTabSummary } from '../widgets.js';
 
 export function buildRoseHips() {
@@ -18,7 +18,7 @@ export function buildRoseHips() {
     card.className = 'item-card';
     card.id = 'ic-' + code.replace(/\//g, '-');
     card.innerHTML = `
-      ${ITEM_IMG[code] ? `<img class="item-img" src="${imgSrc(ITEM_IMG[code])}" alt="${name}" loading="lazy">` : ''}
+      <img class="item-img" src="${imgSrc(itemImagePath(code))}" alt="${name}" loading="lazy" onerror="this.remove()">
       <div class="item-name">${name}</div>
       <div class="item-meta">${code} · Rose Hips</div>
       <div class="item-foot">

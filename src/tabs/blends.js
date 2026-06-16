@@ -1,5 +1,5 @@
 // Fall/Winter & Spring/Summer blend tabs.
-import { BLEND_VARIANTS, SCENT_IMG, METRIC_LABELS, imgSrc } from '../data.js';
+import { BLEND_VARIANTS, METRIC_LABELS, imgSrc, scentImagePath } from '../data.js';
 import { makeTabSummary } from '../widgets.js';
 
 export function buildBlendSection(scents, sectId) {
@@ -22,7 +22,7 @@ export function buildBlendSection(scents, sectId) {
         <div class="scent-sub zero" id="sub-${code}">$0.00</div>
       </div>
       <div class="scent-body">
-        ${SCENT_IMG[code] ? `<img class="scent-side" src="${imgSrc(SCENT_IMG[code])}" alt="${name}" loading="lazy">` : ''}
+        <img class="scent-side" src="${imgSrc(scentImagePath(code))}" alt="${name}" loading="lazy" onerror="this.remove()">
         <div class="scent-rows">
           ${BLEND_VARIANTS.map(v => {
             const itemCode = v.prefix + '/' + code;

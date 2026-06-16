@@ -73,70 +73,17 @@ export const TAB_DEFS = [
   ['sm', 'Summary'],
 ];
 
-// ============== PRODUCT IMAGES ==============
-// Blend scents keyed by 2-letter scent code (one photo per scent).
-// Lakeside (LS) and Sanibel (SB) have no photo yet.
-export const SCENT_IMG = {
-  AW: 'photos/fallwinter/AW.jpeg',
-  BO: 'photos/fallwinter/BO.jpeg',
-  CA: 'photos/fallwinter/CA.jpeg',
-  HS: 'photos/fallwinter/HS.jpeg',
-  MK: 'photos/fallwinter/MK.jpeg',
-  MC: 'photos/fallwinter/MC.jpeg',
-  NP: 'photos/fallwinter/NP.jpeg',
-  PO: 'photos/fallwinter/PO.jpeg',
-  WP: 'photos/fallwinter/WP.jpeg',
-  IS: 'photos/fallwinter/IS.jpeg',
-  PS: 'photos/fallwinter/PS.jpeg',
-  CB: 'photos/springsummer/CB.jpeg',
-  IP: 'photos/springsummer/IP.jpeg',
-  LF: 'photos/springsummer/LF.jpeg',
-  LR: 'photos/springsummer/LR.jpeg',
-  MI: 'photos/springsummer/MI.jpeg',
-  OS: 'photos/springsummer/OS.jpeg',
-  VG: 'photos/springsummer/VG.jpeg',
-  WF: 'photos/springsummer/WF.jpeg',
-  LB: 'photos/springsummer/LB.jpeg',
-};
+const FW_SCENT_CODES = new Set(FW_SCENTS.map(([code]) => code));
 
-// Vase fillers and rose hips keyed by full item code.
-export const ITEM_IMG = {
-  'RH/CA': 'photos/rosehips/Cottage Apple.jpeg',
-  'RH/HS': 'photos/rosehips/Holiday Spice.jpeg',
-  'RH/OH': 'photos/rosehips/Orange Harvest.jpeg',
-  'RH/PS': 'photos/rosehips/Pumpkin Spice.jpeg',
-  'RH/CN': 'photos/rosehips/Cinnamon.jpeg',
-  'RH/SD': 'photos/rosehips/Snickerdoodle.jpeg',
-  'RH/WP': 'photos/rosehips/Winter Pine.jpeg',
-  'RH/BO': 'photos/rosehips/BOO!.jpeg',
-  'VF/MIC-H': 'photos/vasefillers/miniindiancornharvest.jpeg',
-  'VF/MUC-J': 'photos/vasefillers/muirriconesjoyful.jpeg',
-  'VF/PMP-T': 'photos/vasefillers/pumpinosthankful.jpeg',
-  'VF/PUT-H': 'photos/vasefillers/putkapodsharvest.jpeg',
-  'VF/ABS': 'photos/vasefillers/ambernutstemsnatural.jpeg',
-  'VF/FBC': 'photos/vasefillers/frostedbirchcones.jpeg',
-  'VF/ASA': 'photos/vasefillers/appleslicesassorted.jpeg',
-  'VF/ASG': 'photos/vasefillers/appleslicesgreen.jpeg',
-  'VF/ASR': 'photos/vasefillers/appleslicesred.jpeg',
-  'VF/OSG': 'photos/vasefillers/orangeslicesgreen.jpeg',
-  'VF/OSO': 'photos/vasefillers/orangeslicesorange.jpeg',
-  'VF/JP': 'photos/vasefillers/juniperpreserved.jpeg',
-  'VF/MICN': 'photos/vasefillers/miniindiancornnohusk.jpeg',
-  'VF/MIC': 'photos/vasefillers/miniindiancorn.jpeg',
-  'VF/MUC': 'photos/vasefillers/muiriicones.jpeg',
-  'VF/SMC': 'photos/vasefillers/spanishmosschartreuse.jpeg',
-  'VF/PMP': 'photos/vasefillers/pumpinos.jpeg',
-  'VF/WR': 'photos/vasefillers/whiteroot.jpeg',
-  'VF/OG': 'photos/vasefillers/orangesgreen.jpeg',
-  'VF/OO': 'photos/vasefillers/orangesorange.jpeg',
-  'VF/CSR': 'photos/vasefillers/canellastemsred.jpeg',
-  'VF/DW': 'photos/vasefillers/driftwood.jpeg',
-  'VF/PTP': 'photos/vasefillers/putkapods.jpeg',
-  'VF/PCW': 'photos/vasefillers/pineconestippedwhite.jpeg',
-  'VF/HC': 'photos/vasefillers/hemlockcones.jpeg',
-  'VF/MBL': 'photos/vasefillers/minibirchlogs.jpeg',
-  'VF/RMC': 'photos/vasefillers/reindeermodsschartreuse.jpeg',
-};
+export function scentImagePath(code) {
+  const folder = FW_SCENT_CODES.has(code) ? 'fallwinter' : 'springsummer';
+  return `photos/${folder}/${code}.jpeg`;
+}
+
+export function itemImagePath(code) {
+  const folder = code.startsWith('RH/') ? 'rosehips' : 'vasefillers';
+  return `photos/${folder}/${code.replace(/\//g, '-')}.jpeg`;
+}
 
 // Encode spaces etc. for use in an <img src>
 export function imgSrc(path) { return path ? encodeURI(path) : ''; }
