@@ -25,11 +25,11 @@ function goToSummary() {
 }
 
 function isAuthorized() {
-  return localStorage.getItem(ACCESS_KEY) === 'granted';
+  return sessionStorage.getItem(ACCESS_KEY) === 'granted';
 }
 
 function authorize() {
-  localStorage.setItem(ACCESS_KEY, 'granted');
+  sessionStorage.setItem(ACCESS_KEY, 'granted');
   document.body.classList.remove('locked');
   document.getElementById('access-gate')?.classList.remove('visible');
 }
