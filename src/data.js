@@ -46,9 +46,9 @@ export const VF_ITEMS = [
   ['VF/ASR',   'Apple Slices Red',             '180g · 12 per case', 8],
   ['VF/OSG',   'Orange Slices Green',          '180g · 12 per case', 8],
   ['VF/OSO',   'Orange Slices Orange',         '180g · 12 per case', 8],
-  ['VF/JP',    'Juniper Preserved',            '130g · 12 per case', 9.75],
-  ['VF/MICN',  'Mini Indian Corn (No Husk)',  '10 ears/bag · 12 per case', 9.75],
-  ['VF/MIC',   'Mini Indian Corn',             '8 ears/bag · 12 per case', 9.75],
+  ['VF/JP',    'Juniper Preserved',            '130g · 12 per case', 11],
+  ['VF/MICN',  'Mini Indian Corn (No Husk)',  '10 ears/bag · 12 per case', 12],
+  ['VF/MIC',   'Mini Indian Corn',             '8 ears/bag · 12 per case', 12],
   ['VF/MUC',   'Muirii Cones',                 '375g · 12 per case', 8],
   ['VF/SMC',   'Spanish Moss Chartreuse',     '50g · 12 per case', 8],
   ['VF/PMP',   'Pumpinos',                     '180g · 12 per case', 8],
@@ -58,16 +58,20 @@ export const VF_ITEMS = [
   ['VF/CSR',   'Canella Stems Red',            '130g · 12 per case', 8],
   ['VF/DW',    'Driftwood',                    '20 piece · 12 per case', 9.75],
   ['VF/PTP',   'Putka Pods',                   '95g · 12 per case', 8],
-  ['VF/PCW',   'Pine Cones Tipped White',     '10 cones/bag · 12 per case', 8],
+  ['VF/PCW',   'Pine Cones Tipped White',     '10 cones/bag · 12 per case', 10],
   ['VF/HC',    'Hemlock Cones',                '120g · 12 per case', 8],
   ['VF/MBL',   'Mini Birch Logs',              '16 logs/bag · 12 per case', 8],
   ['VF/RMC',   'Reindeer Moss Chartreuse',     '70g · 12 per case', 8],
 ];
 export const RH_ITEMS = [
-  ['RH/CA', 'Cottage Apple', 9.75], ['RH/HS', 'Holiday Spice', 9.75],
-  ['RH/OH', 'Orange Harvest', 9.75], ['RH/PS', 'Pumpkin Spice', 9.75],
-  ['RH/CN', 'Cinnamon', 9.75], ['RH/SD', 'Snickerdoodle', 9.75],
-  ['RH/WP', 'Winter Pine', 9.75], ['RH/BO', 'BOO!', 9.75],
+  ['RH/CA', 'Cottage Apple', 10],
+  ['RH/HS', 'Holiday Spice', 10],
+  ['RH/OH', 'Orange Harvest', 10],
+  ['RH/PS', 'Pumpkin Spice', 10],
+  ['RH/CN', 'Cinnamon', 10],
+  ['RH/SD', 'Snickerdoodle', 10],
+  ['RH/WP', 'Winter Pine', 10],
+  ['RH/BO', 'BOO!', 10],
 ];
 export const RF_ITEMS = [
   ['FO/AW','Aspen Woods'],['FO/BO','Boo!'],['FO/CA','Cottage Apple'],
@@ -80,7 +84,7 @@ export const RF_ITEMS = [
   ['FO/OH','Orange Harvest'],['FO/OS','Ocean Spa'],['FO/PO','Pomander'],
   ['FO/PS','Pumpkin Spice'],['FO/SB','Sanibel'],['FO/SD','Snickerdoodle'],
   ['FO/VG','Vintage Garden'],['FO/VS','Vanilla Spruce'],['FO/WF','Wildflowers'],
-  ['FO/WP','Winter Pine'],
+  ['FO/WP','Winter Pine'], ['FO/PT','Pear Tree'],
 ];
 export const TAB_DEFS = [
   ['fw', 'Fall / Winter'], ['ss', 'Spring / Summer'],
