@@ -2,7 +2,6 @@
 // Pure data — no DOM, no side effects.
 
 export const FW_SCENTS = [
-  ['AW', 'Aspen Woods'],
   ['BO', "Bag O' Boo!"],
   ['CA', 'Cottage Apple'],
   ['HS', 'Holiday Spruce'],
