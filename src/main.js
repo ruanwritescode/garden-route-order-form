@@ -11,7 +11,7 @@ import { buildSummaryTab, updateSummaryTab } from './tabs/summary.js';
 import { FORM_FIELDS, saveState, restoreState, clearSavedState, checkStorageReliability } from './state.js';
 import { recalc, syncBottomPadding } from './calc.js';
 import { updateQtyPopover, hideQtyPopover } from './validate.js';
-import { onQtyChange, toggleCard, updateItemSub, updateBlendSub } from './quantity.js';
+import { onQtyChange, toggleCard, updateItemSub, updateBlendSub, updateOtherSub } from './quantity.js';
 import { submitOrder } from './submit.js';
 
 const ACCESS_KEY = 'gardenRouteAccess';
@@ -68,7 +68,7 @@ function showAccessGate() {
 
 // Expose functions referenced by inline handlers in the generated/markup HTML.
 Object.assign(window, {
-  onQtyChange, toggleCard, updateItemSub, updateBlendSub,
+  onQtyChange, toggleCard, updateItemSub, updateBlendSub, updateOtherSub,
   submitOrder, clearSavedState, goToSummary,
 });
 

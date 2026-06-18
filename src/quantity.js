@@ -45,3 +45,18 @@ export function updateBlendSub(scentCode) {
   const card = document.getElementById('sc-' + scentCode);
   if (card) card.classList.toggle('has-items', sub > 0);
 }
+
+export function updateOtherSub(blockId, variantCodes) {
+  let sub = 0;
+  variantCodes.forEach(code => {
+    const q = qty[code];
+    if (q) sub += q.qty * q.price;
+  });
+  const el = document.getElementById('sub-' + blockId);
+  if (el) {
+    el.textContent = '$' + sub.toFixed(2);
+    el.classList.toggle('zero', sub === 0);
+  }
+  const card = document.getElementById('sc-' + blockId);
+  if (card) card.classList.toggle('has-items', sub > 0);
+}

@@ -1,5 +1,5 @@
 // Fall/Winter & Spring/Summer blend tabs.
-import { BLEND_VARIANTS, FW_OTHER, METRIC_LABELS, imgSrc, scentImagePath } from '../data.js';
+import { BLEND_VARIANTS, FW_OTHER, METRIC_LABELS, imgSrc, otherImagePath, scentImagePath } from '../data.js';
 import { makeTabSummary } from '../widgets.js';
 
 export function buildBlendSection(scents, sectId) {
@@ -49,36 +49,64 @@ export function buildBlendSection(scents, sectId) {
   if (sectId === 'sect-fw' && FW_OTHER.length > 0) {
     const otherGrid = document.createElement('div');
     otherGrid.className = 'scent-grid';
-    
-    FW_OTHER.forEach(product => {
+
+    FW_OTHER.forEach((product, productIndex) => {
       const card = document.createElement('div');
+      const blockId = `fwother-${productIndex}`;
       card.className = 'scent-card';
-      card.id = 'sc-' + product.code;
-      const qid = 'q-' + product.code.replace(/\//g, '-');
+      card.id = 'sc-' + blockId;
+      const primaryVariant = product.variants[0];
+      const imageSrc = imgSrc(otherImagePath(primaryVariant.code));
       card.innerHTML = `
         <div class="scent-head">
-          <div class="scent-name">${product.name}</div>
-          <div class="scent-sub zero" id="sub-${product.code}">$0.00</div>
+          <div class="scent-name">${product.product}</div>
+          <div class="scent-sub zero" id="sub-${blockId}">$0.00</div>
         </div>
         <div class="scent-body">
-          <img class="scent-side" src="${imgSrc(scentImagePath(product.code))}" alt="${product.name}" loading="lazy" onerror="this.remove()">
+          <div class="other-carousel">
+            <button type="button" class="carousel-button carousel-prev" aria-label="Previous variant">‹</button>
+            <img class="scent-side other-side" src="${imageSrc}" alt="${primaryVariant.name}" loading="lazy" onerror="this.remove()">
+            <button type="button" class="carousel-button carousel-next" aria-label="Next variant">›</button>
+          </div>
           <div class="scent-rows">
-            <div class="product-row">
-              <div class="prow-label">
-                <span class="name">${product.name}</span>
-                <span class="code">- ${product.code}</span>
-              </div>
-              <div class="price">$${product.price.toFixed(2)}</div>
-              <input type="number" min="0" step="${product.step}" value="" placeholder="0" id="${qid}" class="qty"
-                     data-code="${product.code}" data-price="${product.price}" data-name="${product.name}" data-step="${product.step}"
-                     oninput="onQtyChange('${product.code}', ${product.price}, this); updateBlendSub('${product.code}')">
-            </div>
+            ${product.variants.map((variant, variantIndex) => {
+              const itemCode = variant.code;
+              const qid = 'q-' + itemCode.replace(/\//g, '-');
+              return `<div class="product-row">
+                <div class="prow-label">
+                  <span class="name">${variant.name}</span>
+                  <span class="code">- ${itemCode}</span>
+                </div>
+                <div class="price">$${variant.price.toFixed(2)}</div>
+                <input type="number" min="0" step="${variant.step}" value="" placeholder="0" id="${qid}" class="qty"
+                       data-code="${itemCode}" data-price="${variant.price}" data-name="${variant.name}" data-step="${variant.step}"
+                       oninput="onQtyChange('${itemCode}', ${variant.price}, this); updateOtherSub('${blockId}', [${product.variants.map(v => `'${v.code}'`).join(', ')}])">
+              </div>`;
+            }).join('')}
           </div>
         </div>
       `;
       otherGrid.appendChild(card);
+
+      const image = card.querySelector('.other-side');
+      const prev = card.querySelector('.carousel-prev');
+      const next = card.querySelector('.carousel-next');
+      if (product.variants.length <= 1) {
+        prev.style.display = 'none';
+        next.style.display = 'none';
+      } else {
+        let currentIndex = 0;
+        const setImage = idx => {
+          currentIndex = (idx + product.variants.length) % product.variants.length;
+          const variant = product.variants[currentIndex];
+          image.src = imgSrc(otherImagePath(variant.code));
+          image.alt = variant.name;
+        };
+        prev.addEventListener('click', () => setImage(currentIndex - 1));
+        next.addEventListener('click', () => setImage(currentIndex + 1));
+      }
     });
-    
+
     sect.appendChild(otherGrid);
   }
 }

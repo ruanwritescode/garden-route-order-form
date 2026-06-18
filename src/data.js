@@ -34,8 +34,13 @@ export const BLEND_VARIANTS = [
   { prefix: 'BBD', desc: 'Display',   price: 12, step: 1  },
 ];
 export const FW_OTHER = [
-  { code: 'GAR/OR', name: 'Garlands', price: 6, step: 1 },
+  { product: 'Garlands', variants: [{ code: 'G48/OSO', name: 'Orange Slices Orange - 60 IN', price: 10, step: 24 }]},
 ];
+
+export function otherImagePath(code) {
+  return `photos/fallwinter/${code.replace(/\//g, '-')}.jpeg`;
+}
+
 export const VF_ITEMS = [
   ['VF/MIC', 'Mini Indian Corn', 'HARVEST - 8 pieces', 12],
   ['VF/PPO', 'Putka Pods Orange', 'HARVEST - 3.87oz/110g', 9],
