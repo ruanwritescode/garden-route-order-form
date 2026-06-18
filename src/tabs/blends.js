@@ -1,5 +1,5 @@
 // Fall/Winter & Spring/Summer blend tabs.
-import { BLEND_VARIANTS, METRIC_LABELS, imgSrc, scentImagePath } from '../data.js';
+import { BLEND_VARIANTS, FW_OTHER, METRIC_LABELS, imgSrc, scentImagePath } from '../data.js';
 import { makeTabSummary } from '../widgets.js';
 
 export function buildBlendSection(scents, sectId) {
@@ -44,4 +44,41 @@ export function buildBlendSection(scents, sectId) {
     grid.appendChild(card);
   });
   sect.appendChild(grid);
+
+  // Add other Fall/Winter products in their own section
+  if (sectId === 'sect-fw' && FW_OTHER.length > 0) {
+    const otherGrid = document.createElement('div');
+    otherGrid.className = 'scent-grid';
+    
+    FW_OTHER.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'scent-card';
+      card.id = 'sc-' + product.code;
+      const qid = 'q-' + product.code.replace(/\//g, '-');
+      card.innerHTML = `
+        <div class="scent-head">
+          <div class="scent-name">${product.name}</div>
+          <div class="scent-sub zero" id="sub-${product.code}">$0.00</div>
+        </div>
+        <div class="scent-body">
+          <img class="scent-side" src="${imgSrc(scentImagePath(product.code))}" alt="${product.name}" loading="lazy" onerror="this.remove()">
+          <div class="scent-rows">
+            <div class="product-row">
+              <div class="prow-label">
+                <span class="name">${product.name}</span>
+                <span class="code">- ${product.code}</span>
+              </div>
+              <div class="price">$${product.price.toFixed(2)}</div>
+              <input type="number" min="0" step="${product.step}" value="" placeholder="0" id="${qid}" class="qty"
+                     data-code="${product.code}" data-price="${product.price}" data-name="${product.name}" data-step="${product.step}"
+                     oninput="onQtyChange('${product.code}', ${product.price}, this); updateBlendSub('${product.code}')">
+            </div>
+          </div>
+        </div>
+      `;
+      otherGrid.appendChild(card);
+    });
+    
+    sect.appendChild(otherGrid);
+  }
 }

@@ -33,6 +33,9 @@ export const BLEND_VARIANTS = [
   { prefix: 'FO',  desc: 'Oil', price: 7.25,  step: 6  },
   { prefix: 'BBD', desc: 'Display',   price: 12, step: 1  },
 ];
+export const FW_OTHER = [
+  { code: 'GAR/OR', name: 'Garlands', price: 6, step: 1 },
+];
 export const VF_ITEMS = [
   ['VF/MIC-H', 'Mini Indian Corn / Harvest', '8 ears/bag · 12 per case', 12],
   ['VF/MUC-J', 'Muirri Cones / Joyful',       '325g · 12 per case', 8],

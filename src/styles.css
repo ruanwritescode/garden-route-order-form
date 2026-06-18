@@ -298,6 +298,11 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
+  .scent-grid + .scent-grid {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-soft);
+  }
   @media (max-width: 720px) {
     .scent-grid { grid-template-columns: 1fr; }
   }
