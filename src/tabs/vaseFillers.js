@@ -1,5 +1,5 @@
 // Vase Fillers tab.
-import { VF_ITEMS, METRIC_LABELS, imgSrc, itemImagePath } from '../data.js';
+import { VF_ITEMS, VN_ITEMS, METRIC_LABELS, imgSrc, itemImagePath } from '../data.js';
 import { makeTabSummary } from '../widgets.js';
 
 export function buildVaseFillers() {
@@ -9,26 +9,39 @@ export function buildVaseFillers() {
   note.className = 'qty-note';
   note.innerHTML = '<strong>Quantities:</strong> Vase fillers are ordered in multiples of 12 (one case = 12 per item).';
   sect.appendChild(note);
-  const grid = document.createElement('div');
-  grid.className = 'item-grid';
-  VF_ITEMS.forEach(([code, name, meta, price]) => {
-    const qid = 'q-' + code.replace(/\//g, '-');
-    const cardId = 'ic-' + code.replace(/\//g, '-');
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.id = cardId;
-    card.innerHTML = `
-      <img class="item-img" src="${imgSrc(itemImagePath(code))}" alt="${name}" loading="lazy" onerror="this.remove()">
-      <div class="item-name">${name}</div>
-      <div class="item-meta">${meta}</div>
-      <div class="item-foot">
-        <span class="item-price">$${price.toFixed(2)} / unit</span>
-        <input type="number" min="0" step="12" value="" placeholder="0" id="${qid}" class="qty" style="width:72px;"
-               data-code="${code}" data-price="${price}" data-name="${name}" data-step="12"
-               oninput="onQtyChange('${code}', ${price}, this); toggleCard('${cardId}', this.value); updateItemSub('${cardId}', ${price}, this.value)">
-      </div>
-      <div class="item-sub" id="sub-${cardId}">$0.00</div>`;
-    grid.appendChild(card);
-  });
-  sect.appendChild(grid);
+
+  const renderGroup = (title, items) => {
+    const label = document.createElement('div');
+    label.className = 'item-group-label';
+    label.textContent = title;
+    sect.appendChild(label);
+
+    const grid = document.createElement('div');
+    grid.className = 'item-grid';
+
+    items.forEach(([code, name, meta, price]) => {
+      const qid = 'q-' + code.replace(/\//g, '-');
+      const cardId = 'ic-' + code.replace(/\//g, '-');
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.id = cardId;
+      card.innerHTML = `
+        <img class="item-img" src="${imgSrc(itemImagePath(code))}" alt="${name}" loading="lazy" onerror="this.remove()">
+        <div class="item-name">${name}</div>
+        <div class="item-meta">${meta}</div>
+        <div class="item-foot">
+          <span class="item-price">$${price.toFixed(2)} / unit</span>
+          <input type="number" min="0" step="12" value="" placeholder="0" id="${qid}" class="qty" style="width:72px;"
+                 data-code="${code}" data-price="${price}" data-name="${name}" data-step="12"
+                 oninput="onQtyChange('${code}', ${price}, this); toggleCard('${cardId}', this.value); updateItemSub('${cardId}', ${price}, this.value)">
+        </div>
+        <div class="item-sub" id="sub-${cardId}">$0.00</div>`;
+      grid.appendChild(card);
+    });
+
+    sect.appendChild(grid);
+  };
+
+  if (VF_ITEMS.length) renderGroup('Vase Fillers', VF_ITEMS);
+  if (VN_ITEMS.length) renderGroup('Vibrantly Natural', VN_ITEMS);
 }
