@@ -73,7 +73,8 @@ export function updateAllTabSummaries() {
 }
 
 export function shippingRate(sub) {
-  if (sub >= 3000) return 0;
+  if (sub >= 4000) return 0;
+  if (sub >= 3000) return 0.05;
   if (sub >= 2000) return 0.10;
   if (sub >= 500) return 0.12;
   return 0.15;
@@ -96,12 +97,12 @@ export function recalc() {
   const tips = [document.getElementById('ship-tip'), document.getElementById('sf-ship-tip')];
   if (sub === 0) {
     tips.forEach(t => { if (t) { t.textContent = ''; t.classList.remove('qualified'); } });
-  } else if (sub >= 3000) {
+  } else if (sub >= 4000) {
     const html = '<svg width="18" height="11" viewBox="0 0 14 9" fill="currentColor" style="vertical-align:-2px;margin-right:8px;"><ellipse cx="3" cy="3" rx="2.4" ry="1.1" transform="rotate(-30 3 3)"/><ellipse cx="7" cy="6" rx="2.4" ry="1.1" transform="rotate(30 7 6)"/><ellipse cx="11" cy="3" rx="2.4" ry="1.1" transform="rotate(-30 11 3)"/></svg>You Are Eligible for Free Shipping<svg width="18" height="11" viewBox="0 0 14 9" fill="currentColor" style="vertical-align:-2px;margin-left:8px;transform:scaleX(-1);"><ellipse cx="3" cy="3" rx="2.4" ry="1.1" transform="rotate(-30 3 3)"/><ellipse cx="7" cy="6" rx="2.4" ry="1.1" transform="rotate(30 7 6)"/><ellipse cx="11" cy="3" rx="2.4" ry="1.1" transform="rotate(-30 11 3)"/></svg>';
     tips.forEach(t => { if (t) { t.innerHTML = html; t.classList.add('qualified'); } });
   } else {
-    const next = sub < 500 ? 500 : sub < 2000 ? 2000 : 3000;
-    const nextRate = sub < 500 ? '12% shipping' : sub < 2000 ? '10% shipping' : 'free shipping';
+    const next = sub < 500 ? 500 : sub < 2000 ? 2000 : sub < 3000 ? 3000 : 4000;
+    const nextRate = sub < 500 ? '12% shipping' : sub < 2000 ? '10% shipping' : sub < 3000 ? '5% shipping' : 'free shipping';
     const text = `Add $${(next - sub).toFixed(2)} more for ${nextRate} rate`;
     tips.forEach(t => { if (t) { t.textContent = text; t.classList.remove('qualified'); } });
   }

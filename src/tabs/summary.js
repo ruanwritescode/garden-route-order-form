@@ -24,7 +24,8 @@ export function buildSummaryTab() {
               <tr data-tier="0"><td>Under $500</td><td>15%</td></tr>
               <tr data-tier="500"><td>$500 – $1,999.99</td><td>12%</td></tr>
               <tr data-tier="2000"><td>$2,000 – $2,999.99</td><td>10%</td></tr>
-              <tr data-tier="3000"><td>$3,000 and up</td><td>Free</td></tr>
+              <tr data-tier="3000"><td>$3,000 – $3,999.99</td><td>5%</td></tr>
+              <tr data-tier="4000"><td>$4,000 and up</td><td>Free</td></tr>
             </tbody>
           </table>
         </div>
@@ -155,11 +156,11 @@ export function updateSummaryTab() {
   const rate = document.getElementById('d-rate').textContent;
 
   let tipHtml = '';
-  if (sub >= 3000) {
+  if (sub >= 4000) {
     tipHtml = `<div class="sm-ship-tip qualified" style="grid-column:1/-1">You Are Eligible for Free Shipping</div>`;
   } else if (sub > 0) {
-    const next = sub < 500 ? 500 : sub < 2000 ? 2000 : 3000;
-    const nextRate = sub < 500 ? '12% shipping' : sub < 2000 ? '10% shipping' : 'free shipping';
+    const next = sub < 500 ? 500 : sub < 2000 ? 2000 : sub < 3000 ? 3000 : 4000;
+    const nextRate = sub < 500 ? '12% shipping' : sub < 2000 ? '10% shipping' : sub < 3000 ? '5% shipping' : 'free shipping';
     tipHtml = `<div class="sm-ship-tip" style="grid-column:1/-1">Add $${(next - sub).toFixed(2)} more for ${nextRate} rate</div>`;
   }
 
@@ -173,7 +174,8 @@ export function updateSummaryTab() {
   // Highlight current shipping tier
   document.querySelectorAll('#recap-ship-tiers tbody tr').forEach(tr => tr.classList.remove('current'));
   let activeTier = '0';
-  if (sub >= 3000) activeTier = '3000';
+  if (sub >= 4000) activeTier = '4000';
+  else if (sub >= 3000) activeTier = '3000';
   else if (sub >= 2000) activeTier = '2000';
   else if (sub >= 500) activeTier = '500';
   if (sub > 0) {
