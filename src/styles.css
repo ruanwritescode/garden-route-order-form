@@ -333,33 +333,6 @@
     border-radius: 4px;
     /* border: 1px solid var(--border-soft); */
   }
-  .other-carousel {
-    position: relative;
-    display: grid;
-    place-items: center;
-    margin-right: 1rem;
-  }
-  .carousel-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2rem;
-    height: 2rem;
-    border: 1px solid var(--border-soft);
-    border-radius: 999px;
-    background: var(--paper);
-    color: var(--sage-dark);
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: grid;
-    place-items: center;
-  }
-  .carousel-prev {
-    left: -0.75rem;
-  }
-  .carousel-next {
-    right: -0.75rem;
-  }
   .scent-rows {
     flex: 1;
     min-width: 0;
@@ -408,8 +381,8 @@
   @media (max-width: 900px) {
     .prow-label {
       flex-direction: column;
-      align-items: flex-start;
-      gap: 1px;
+    align-items: flex-start;
+    gap: 1px;
     }
   }
   .product-row .name { color: var(--ink); }

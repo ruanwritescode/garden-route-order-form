@@ -48,7 +48,7 @@ export function buildBlendSection(scents, sectId) {
   // Add other Fall/Winter products in their own section
   if (sectId === 'sect-fw' && FW_OTHER.length > 0) {
     const otherGrid = document.createElement('div');
-    otherGrid.className = 'scent-grid';
+    otherGrid.className = 'scent-grid fw-other-grid';
 
     FW_OTHER.forEach((product, productIndex) => {
       const card = document.createElement('div');
@@ -63,13 +63,9 @@ export function buildBlendSection(scents, sectId) {
           <div class="scent-sub zero" id="sub-${blockId}">$0.00</div>
         </div>
         <div class="scent-body">
-          <div class="other-carousel">
-            <button type="button" class="carousel-button carousel-prev" aria-label="Previous variant">‹</button>
-            <img class="scent-side other-side" src="${imageSrc}" alt="${primaryVariant.name}" loading="lazy" onerror="this.remove()">
-            <button type="button" class="carousel-button carousel-next" aria-label="Next variant">›</button>
-          </div>
+          <img class="scent-side" id="other-img-${blockId}" src="${imageSrc}" alt="${primaryVariant.name}" loading="lazy" onerror="this.remove()">
           <div class="scent-rows">
-            ${product.variants.map((variant, variantIndex) => {
+            ${product.variants.map(variant => {
               const itemCode = variant.code;
               const qid = 'q-' + itemCode.replace(/\//g, '-');
               return `<div class="product-row">
@@ -88,22 +84,17 @@ export function buildBlendSection(scents, sectId) {
       `;
       otherGrid.appendChild(card);
 
-      const image = card.querySelector('.other-side');
-      const prev = card.querySelector('.carousel-prev');
-      const next = card.querySelector('.carousel-next');
-      if (product.variants.length <= 1) {
-        prev.style.display = 'none';
-        next.style.display = 'none';
-      } else {
-        let currentIndex = 0;
-        const setImage = idx => {
-          currentIndex = (idx + product.variants.length) % product.variants.length;
-          const variant = product.variants[currentIndex];
-          image.src = imgSrc(otherImagePath(variant.code));
-          image.alt = variant.name;
-        };
-        prev.addEventListener('click', () => setImage(currentIndex - 1));
-        next.addEventListener('click', () => setImage(currentIndex + 1));
+      if (product.variants.length > 1) {
+        const img = card.querySelector(`#other-img-${blockId}`);
+        product.variants.forEach(variant => {
+          const input = card.querySelector('#q-' + variant.code.replace(/\//g, '-'));
+          if (input && img) {
+            input.addEventListener('focus', () => {
+              img.src = imgSrc(otherImagePath(variant.code));
+              img.alt = variant.name;
+            });
+          }
+        });
       }
     });
 
