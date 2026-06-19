@@ -14,56 +14,11 @@ import { updateQtyPopover, hideQtyPopover } from './validate.js';
 import { onQtyChange, toggleCard, updateItemSub, updateBlendSub, updateOtherSub } from './quantity.js';
 import { submitOrder } from './submit.js';
 
-const ACCESS_KEY = 'gardenRouteAccess';
-const ACCESS_PASSWORD = 'OrangeS2';
-
 function goToSummary() {
   activateTab('sm');
   updateSummaryTab();
   const sect = document.getElementById('sect-sm');
   if (sect) window.scrollTo({ top: sect.getBoundingClientRect().top + window.scrollY - 20, behavior: 'smooth' });
-}
-
-function isAuthorized() {
-  return sessionStorage.getItem(ACCESS_KEY) === 'granted';
-}
-
-function authorize() {
-  sessionStorage.setItem(ACCESS_KEY, 'granted');
-  document.body.classList.remove('locked');
-  document.getElementById('access-gate')?.classList.remove('visible');
-}
-
-function showAccessGate() {
-  const gate = document.getElementById('access-gate');
-  const passwordField = document.getElementById('access-password');
-  const submitButton = document.getElementById('access-submit');
-  const errorMessage = document.getElementById('access-error');
-  if (!gate || !passwordField || !submitButton || !errorMessage) return;
-
-  document.body.classList.add('locked');
-  gate.classList.add('visible');
-  passwordField.focus();
-
-  const tryPassword = () => {
-    const value = passwordField.value.trim();
-    if (value === ACCESS_PASSWORD) {
-      authorize();
-      init();
-      return;
-    }
-    errorMessage.textContent = 'Password not recognized. Please try again.';
-    passwordField.value = '';
-    passwordField.focus();
-  };
-
-  submitButton.addEventListener('click', tryPassword);
-  passwordField.addEventListener('keydown', event => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      tryPassword();
-    }
-  });
 }
 
 // Expose functions referenced by inline handlers in the generated/markup HTML.
@@ -135,8 +90,4 @@ async function init() {
   new ResizeObserver(syncBottomPadding).observe(document.querySelector('.summary-footer'));
 }
 
-if (isAuthorized()) {
-  init();
-} else {
-  showAccessGate();
-}
+init();
