@@ -42,7 +42,6 @@ export function otherImagePath(code) {
 }
 
 export const VF_ITEMS = [
-  ['VF/MIC', 'Mini Indian Corn', 'HARVEST - 8 pieces', 12],
   ['VF/PPO', 'Putka Pods Orange', 'HARVEST - 3.87oz/110g', 9],
   ['VF/PUM', 'Pumpinos', 'THANKFUL - 7oz / 200g', 9],
 ];
