@@ -34,7 +34,7 @@ export const BLEND_VARIANTS = [
   { prefix: 'BBD', desc: 'Display',   price: 12, step: 1  },
 ];
 export const FW_OTHER = [
-  { product: 'Simmer Pot', variants: [{ code: '', name: 'Simmer Potpopurri', price: 12, step: 12 }]},
+  { product: 'Simmer Potpourri', variants: [{ code: 'SIM/OSO', name: 'Simmer Pot - Orange Slices', price: 12, step: 12 }]},
   { product: 'Garlands', variants: [{ code: 'G48/OSO', name: 'Orange Slices Orange - 60 IN', price: 10, step: 24 }]},
 ];
 
